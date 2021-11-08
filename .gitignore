@@ -24,4 +24,4 @@ yarn-error.log*
 .netlify
 .vercel
 package-lock.json*
-
+.env
