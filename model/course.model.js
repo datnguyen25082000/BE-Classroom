@@ -27,7 +27,7 @@ module.exports = {
 
   async single(id) {
     const rows = await db.load(
-      `select * from ${TBL_COURSES} where userUsername = '${id}' `
+      `select * from ${TBL_COURSES} where course_id = '${id}' `
     );
     if (rows.length === 0) return null;
 

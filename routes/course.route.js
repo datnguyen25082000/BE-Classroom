@@ -49,4 +49,16 @@ router.post("/DeleteCourse", async function (req, res, next) {
   res.json({ result: {} });
 });
 
+router.get("/GetOneCourse", async function (req, res, next) {
+  const { courseId } = req.query;
+
+  const course = await CourseModel.single(courseId);
+  res.json({
+    ...defaultRes,
+    content: {
+      course,
+    },
+  });
+});
+
 module.exports = router;
