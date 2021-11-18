@@ -2,13 +2,6 @@ const db = require('../utils/db');
 
 const TBL_USERS = 'users';
 
-// USER_USERNAME varchar(30) PK 
-// USER_DISPLAYNAME varchar(40) 
-// USER_PASSWORD varchar(100) 
-// USER_EMAIL varchar(35) 
-// USER_AVATAR varchar(100) 
-// USER_PHONE varchar(12)
-
 module.exports = {
   all() {
     return db.load(`select * from ${TBL_USERS}`);

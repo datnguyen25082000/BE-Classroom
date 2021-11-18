@@ -5,8 +5,6 @@ module.exports = function (app) {
 
   // default error handler
   app.use(function (err, req, res, next) {
-    console.log("haha");
-    console.error(err.stack);
     res.status(err.status || 500);
   });
 };
