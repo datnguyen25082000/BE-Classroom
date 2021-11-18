@@ -4,16 +4,16 @@ const bcrypt = require("bcrypt");
 
 module.exports = {
   async authenticateUser(username, password) {
-    const user = userModel.single(username);
+    const user = await userModel.single(username);
 
-    if (!username) {
+    if (!user) {
       return {
         success: false,
         data: errorMessageConstants.USERNAME_NOT_EXIST,
       };
     }
 
-    const isCorrectPassword = await bcrypt.compare(password, user.password);
+    const isCorrectPassword = await bcrypt.compare(password, user.user_password);
     if (isCorrectPassword) {
       return {
         success: true,

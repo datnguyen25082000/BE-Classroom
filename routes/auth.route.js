@@ -16,37 +16,6 @@ const User = require("../model/user.model");
 router.post("/register", authController.register);
 
 // Login
-router.post("/Login", async (req, res) => {
-  const { username, password } = req.body;
-  
-  const defaultRes = {
-    result: 0,
-    message: "Tài khoản không tồn tại",
-    content: {},
-  };
-
-  if (username && password) {
-    var user = await User.single(username);
-
-    if (!user) {
-      res.status(200).json(defaultRes);
-    }
-    if (user && user.user_password === password) {
-      var payload = { username: user.user_username };
-      var token = jwt.sign(payload, jwtOptions.secretOrKey);
-      res.json({
-        result: 1,
-        message: "Đăng nhập thành công",
-        content: {
-          token: token,
-        },
-      });
-    } else {
-      res
-        .status(200)
-        .json({ ...defaultRes, message: "Mật khẩu không chính xác" });
-    }
-  } else res.status(200).json(defaultRes);
-});
+router.post("/Login", authController.login);
 
 module.exports = router;
