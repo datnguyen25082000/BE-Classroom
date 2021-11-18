@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 const passport = require("passport");
+const authController = require("../controllers/auth.controller");
 var passportJWT = require("passport-jwt");
 var ExtractJwt = passportJWT.ExtractJwt;
 var JwtStrategy = passportJWT.Strategy;
@@ -12,47 +13,20 @@ var jwt = require("jsonwebtoken");
 const User = require("../model/user.model");
 
 // Register
-router.post("/register", async (req, res) => {
-  const { username, password, fullname } = req.body;
-
-  if (username && password) {
-    var user = await User.single(username);
-
-    const defaultRes = {
-      result: 0,
-      message: "Đăng ký thất bại",
-      content: {},
-    };
-
-    if (user) {
-      res
-        .status(200)
-        .json({ ...defaultRes, message: "Tên đăng nhập đã tồn tại" });
-    } else {
-      const newUser = {
-        user_username: username,
-        user_password: password,
-        user_displayname: fullname,
-      };
-      User.add(newUser);
-
-      res.json({ ...defaultRes, message: "Đăng ký tài khoản thành công" });
-    }
-  }
-});
+router.post("/register", authController.register);
 
 // Login
 router.post("/Login", async (req, res) => {
   const { username, password } = req.body;
+  
+  const defaultRes = {
+    result: 0,
+    message: "Tài khoản không tồn tại",
+    content: {},
+  };
 
   if (username && password) {
     var user = await User.single(username);
-
-    const defaultRes = {
-      result: 0,
-      message: "Tài khoản không tồn tại",
-      content: {},
-    };
 
     if (!user) {
       res.status(200).json(defaultRes);
