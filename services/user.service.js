@@ -46,4 +46,10 @@ module.exports = {
 
     return { success: true };
   },
+
+  async findUserByUsername(username) {
+    const user = await userModel.single(username)
+
+    return user
+  }
 };

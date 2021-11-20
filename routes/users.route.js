@@ -14,14 +14,10 @@ router.get("/", function (req, res, next) {
 });
 
 router.get("/GetCurrentUser", async function (req, res, next) {
-  const { username } = req.user;
-
-  const user = await userModel.single(username);
-  console.log("haha", user);
   res.json({
     ...defaultRes,
     content: {
-      user: user,
+      user: req.user.user_username,
     },
   });
 });

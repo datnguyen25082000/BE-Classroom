@@ -10,7 +10,7 @@ const defaultRes = {
 
 /* GET home page. */
 router.get("/GetAllCourse", async function (req, res, next) {
-  const { username } = req.user;
+  const username = req.user.user_username;
   const listCourses = await CourseModel.all(username);
 
   res.json({
@@ -23,7 +23,7 @@ router.get("/GetAllCourse", async function (req, res, next) {
 
 router.post("/AddCourse", async function (req, res, next) {
   const query = req.query;
-  const { username } = req.user;
+  const username = req.user.user_username;
 
   const newClass = {
     course_name: query.nameclass,
