@@ -1,10 +1,16 @@
 const userModel = require("../model/user.model");
 const errorMessageConstants = require("../constants/error-message.constants");
 const bcrypt = require("bcrypt");
+const userTypeConstant = require("../constants/user-type.constant");
+const e = require("express");
 
 module.exports = {
-  async authenticateUser(username, password) {
-    const user = await userModel.single(username);
+  async authenticateUser(
+    username,
+    password,
+    userType = userTypeConstant.NORMAL_USER
+  ) {
+    const user = await userModel.single(username, userType);
 
     if (!user) {
       return {
@@ -13,7 +19,10 @@ module.exports = {
       };
     }
 
-    const isCorrectPassword = await bcrypt.compare(password, user.user_password);
+    const isCorrectPassword = await bcrypt.compare(
+      password,
+      user.user_password
+    );
     if (isCorrectPassword) {
       return {
         success: true,
@@ -26,8 +35,13 @@ module.exports = {
     }
   },
 
-  async registerUser(username, password, displayName) {
-    const user = await userModel.single(username);
+  async registerUser(
+    username,
+    password,
+    displayName,
+    userType = userTypeConstant.NORMAL_USER
+  ) {
+    const user = await userModel.single(username, userType);
 
     if (user) {
       return {
@@ -36,20 +50,28 @@ module.exports = {
       };
     }
 
-    const hashPassword = await bcrypt.hash(password, 10);
-
-    userModel.add({
-      user_username: username,
-      user_password: hashPassword,
-      user_displayname: displayName,
-    });
+    if (userType === userTypeConstant.NORMAL_USER) {
+      const hashPassword = await bcrypt.hash(password, 10);
+      userModel.add({
+        user_username: username,
+        user_password: hashPassword,
+        user_displayname: displayName,
+        user_type: userType,
+      });
+    } else {
+      userModel.add({
+        user_username: username,
+        user_displayname: displayName,
+        user_type: userType,
+      });
+    }
 
     return { success: true };
   },
 
-  async findUserByUsername(username) {
-    const user = await userModel.single(username)
+  async findUserByUsername(username, userType = userTypeConstant.NORMAL_USER) {
+    const user = await userModel.single(username, userType);
 
-    return user
-  }
+    return user;
+  },
 };

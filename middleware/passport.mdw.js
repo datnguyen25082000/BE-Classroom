@@ -3,6 +3,7 @@ const FacebookTokenStrategy = require("passport-facebook-token");
 const JWTStrategy = require("passport-jwt").Strategy;
 const ExtractJWT = require("passport-jwt").ExtractJwt;
 const userService = require("../services/user.service");
+const userTypeConstant = require('../constants/user-type.constant')
 
 passport.use(
   new JWTStrategy(
@@ -30,18 +31,20 @@ passport.use(
       fbGraphVersion: "v3.0",
     },
     async (accessToken, refreshToken, profile, done) => {
-      console.log("profile: ", profile);
+      let user = await userService.findUserByUsername(profile.id, userTypeConstant.FACEBOOK_USER)
+      
+      if (!user) {
+        await userService.registerUser(profile.id, null, profile.displayName, userTypeConstant.FACEBOOK_USER)
+        user = await userService.findUserByUsername(profile.id, userTypeConstant.FACEBOOK_USER)
+      }
+
+      done(null, user)
     }
   )
 );
 
-passport.authenticate = passport.authenticate(
-  ["jwt", "facebook-token"],
-  { session: false },
-  (information, user, error) => {
-    console.log("error: ", error);
-    console.log("user: ", user);
-  }
-);
+passport.authenticate = passport.authenticate(["jwt", "facebook-token"], {
+  session: false,
+});
 
 module.exports = passport;

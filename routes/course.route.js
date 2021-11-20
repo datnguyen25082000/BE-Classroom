@@ -10,8 +10,8 @@ const defaultRes = {
 
 /* GET home page. */
 router.get("/GetAllCourse", async function (req, res, next) {
-  const username = req.user.user_username;
-  const listCourses = await CourseModel.all(username);
+  const userId = req.user.user_id;
+  const listCourses = await CourseModel.all(userId);
 
   res.json({
     ...defaultRes,
@@ -23,13 +23,13 @@ router.get("/GetAllCourse", async function (req, res, next) {
 
 router.post("/AddCourse", async function (req, res, next) {
   const query = req.query;
-  const username = req.user.user_username;
+  const userId = req.user.user_id;
 
   const newClass = {
     course_name: query.nameclass,
     course_thumbnail:
       "https://ak.picdn.net/shutterstock/videos/19066813/thumb/12.jpg",
-    course_hostid: username,
+    course_hostid: userId,
     course_createdate: new Date(),
   };
 

@@ -3,9 +3,9 @@ const db = require("../utils/db");
 const TBL_COURSES = "courses";
 
 module.exports = {
-  all(username) {
+  all(userId) {
     return db.load(
-      `select * from ${TBL_COURSES} where course_hostid = '${username}' ORDER BY course_createdate DESC`
+      `select * from ${TBL_COURSES} where course_hostid = '${userId}' ORDER BY course_createdate DESC`
     );
   },
 
@@ -28,8 +28,8 @@ module.exports = {
   },
 
   patch(entity) {
-    const condition = { userUsername: entity.userUsername };
-    delete entity.username;
+    const condition = { userId: entity.userId };
+    delete entity.userId;
     return db.patch(entity, condition, TBL_COURSES);
   },
 };
