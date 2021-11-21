@@ -9,7 +9,7 @@ module.exports = {
     password,
     userType = userTypeConstant.NORMAL_USER
   ) {
-    const user = await userModel.single(username, userType);
+    const user = await userModel.findByUsername(username, userType);
 
     if (!user) {
       return {
@@ -40,7 +40,7 @@ module.exports = {
     displayName,
     userType = userTypeConstant.NORMAL_USER
   ) {
-    const user = await userModel.single(username, userType);
+    const user = await userModel.findByUsername(username, userType);
 
     if (user) {
       return {
@@ -69,7 +69,7 @@ module.exports = {
   },
 
   async findUserByUsername(username, userType = userTypeConstant.NORMAL_USER) {
-    const user = await userModel.single(username, userType);
+    const user = await userModel.findByUsername(username, userType);
 
     return user;
   },

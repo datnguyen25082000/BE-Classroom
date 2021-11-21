@@ -17,18 +17,29 @@ module.exports = {
     return db.del(condition, TBL_USERS);
   },
 
-  async single(username, userType = null) {
+  async findByUsername(username, userType = null) {
     let rows;
     if (userType === null) {
       rows = await db.load(
         `select * from ${TBL_USERS} where user_username = '${username}' `
       );
-    }
-    else {
+    } else {
       rows = await db.load(
         `select * from ${TBL_USERS} where user_username = '${username}' and user_type = ${userType}`
-      )
+      );
     }
+
+    if (rows.length === 0) return null;
+
+    return rows[0];
+  },
+
+  async findByUserId(userId) {
+    let rows;
+
+    rows = await db.load(
+      `select * from ${TBL_USERS} where user_id = '${userId}' `
+    );
 
     if (rows.length === 0) return null;
 
