@@ -1,7 +1,7 @@
 const userService = require("../services/user.service");
 const errorMessageConstants = require("../constants/error-message.constants");
 const displayMessageConstants = require("../constants/display-message.constants");
-const jwt = require('jsonwebtoken')
+const jwt = require("jsonwebtoken");
 
 const jwtOptions = {
   secretOrKey: process.env.JWTPRIVATEKEY,
@@ -68,5 +68,15 @@ module.exports = {
     } else {
       res.json(defaultRes);
     }
-  }
+  },
+
+  async getCurrentUser(req, res, next) {
+    res.json({
+      result: 0,
+      message: "",
+      content: {
+        user: req.user.user_username,
+      },
+    });
+  },
 };

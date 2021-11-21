@@ -2,7 +2,6 @@ const userModel = require("../model/user.model");
 const errorMessageConstants = require("../constants/error-message.constants");
 const bcrypt = require("bcrypt");
 const userTypeConstant = require("../constants/user-type.constant");
-const e = require("express");
 
 module.exports = {
   async authenticateUser(
