@@ -6,5 +6,6 @@ const courseJoinController = require("../controllers/course-join.controller");
 router.get("/GetAllCourses", courseJoinController.getAllCourses);
 router.get("/AllMembers", courseJoinController.getAllMembersOfCourse)
 router.get("/JoinCourse", courseJoinController.joinCourse)
+router.post("/InviteViaEmail", courseJoinController.inviteViaEmail);
 
 module.exports = router;

@@ -1,4 +1,6 @@
 const courseJoinService = require("../services/course-join.service");
+const MailService = require("../utils/mail");
+const jwt = require("jsonwebtoken");
 
 const defaultRes = {
   result: 0,
@@ -42,5 +44,48 @@ module.exports = {
     } else {
       res.status(200).json(defaultRes);
     }
+  },
+
+  async inviteViaEmail(req, res, next) {
+    const { email, course_id, teacher_invite } = req.body;
+    let result = false;
+
+    const token = jwt.sign(
+      {
+        email: email,
+        course_id: course_id,
+        teacher_invite: teacher_invite,
+      },
+      process.env.JWT_ACCOUNT_ACTIVATION,
+      {
+        expiresIn: "1d",
+      }
+    );
+
+    // content of confirm mail
+    var content = "";
+    content += `
+        <div style="padding: 10px">
+            <div>
+                <h1>NTD MY CLASSROOM</h1>
+                <h3>Chào mừng bạn đến với hệ thống lớp học myclassroom</h3>
+                <p>Bạn có một lời mời tham gia lớp học đến từ tài khoản dat@gmail.com</p>
+                <button>
+                  <a href='http://localhost:5000/api/auth/AcceptInvite?token=${token}'>Đồng ý tham gia</a>
+                </button>
+            </div>
+        </div>
+    `;
+
+    if (email) {
+      result = MailService.SendMail({ email: email, content: content });
+    }
+
+    res.json({
+      ...defaultRes,
+      content: {
+        sent: result,
+      },
+    });
   },
 };

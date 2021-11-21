@@ -66,6 +66,6 @@ module.exports = {
         user_role: courseJoin.user_role,
       });
     }
-    return members
+    return members;
   },
 };
