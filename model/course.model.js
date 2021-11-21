@@ -2,17 +2,10 @@ const db = require("../utils/db");
 
 const TBL_COURSES = "courses";
 
-// COURSE_ID varchar(30) PK
-// COURSE_NAME varchar(40)
-// COURSE_HOSTID varchar(30)
-// COURSE_CREATEDATE date
-// COURSE_THUMBNAIL varchar(100)
-// COURSE_TOPIC varchar(20)
-
 module.exports = {
-  all(username) {
+  all(userId) {
     return db.load(
-      `select * from ${TBL_COURSES} where course_hostid = '${username}' ORDER BY course_createdate DESC`
+      `select * from ${TBL_COURSES} where course_hostid = '${userId}' ORDER BY course_createdate DESC`
     );
   },
 
@@ -35,8 +28,8 @@ module.exports = {
   },
 
   patch(entity) {
-    const condition = { userUsername: entity.userUsername };
-    delete entity.username;
+    const condition = { userId: entity.userId };
+    delete entity.userId;
     return db.patch(entity, condition, TBL_COURSES);
   },
 };

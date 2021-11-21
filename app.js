@@ -1,12 +1,14 @@
-var createError = require("http-errors");
-var express = require("express");
-var path = require("path");
-var cookieParser = require("cookie-parser");
-var logger = require("morgan");
-var cors = require("cors");
 require("dotenv").config();
 
-var app = express();
+const createError = require("http-errors");
+const express = require("express");
+const path = require("path");
+const cookieParser = require("cookie-parser");
+const logger = require("morgan");
+const cors = require("cors");
+const passport = require("./middleware/passport.mdw");
+
+const app = express();
 app.use(cors());
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
@@ -17,6 +19,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, "public")));
+app.use(passport.initialize());
 
 // STATIC FILE
 app.use("/public", express.static("public"));
