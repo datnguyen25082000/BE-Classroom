@@ -75,4 +75,18 @@ router.post("/Login", async (req, res) => {
   } else res.status(200).json(defaultRes);
 });
 
+// acceptInvite
+router.get("/AcceptInvite", async function (req, res, next) {
+  const { token } = req.query;
+
+  const { email, course_id, teacher_invite } = jwt.verify(
+    token,
+    process.env.JWT_ACCOUNT_ACTIVATION
+  );
+
+  console.log("email", email);
+
+  res.redirect("https://w3schools.com");
+});
+
 module.exports = router;
