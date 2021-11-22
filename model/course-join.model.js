@@ -29,6 +29,14 @@ module.exports = {
 
   del(entity) {
     const condition = { course_id: entity.course_id, user_id: entity.user_id };
+    // return db.del(condition, TBL_COURSE_JOIN);
+    return db.load(
+      `delete from ${TBL_COURSE_JOIN} where course_id=${condition.course_id} and user_id=${condition.user_id}`
+    );
+  },
+
+  delByCourseId(entity) {
+    const condition = { course_id: entity.course_id };
     return db.del(condition, TBL_COURSE_JOIN);
   },
 

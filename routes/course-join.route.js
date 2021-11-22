@@ -7,5 +7,6 @@ router.get("/GetAllCourses", courseJoinController.getAllCourses);
 router.get("/AllMembers", courseJoinController.getAllMembersOfCourse)
 router.get("/JoinCourse", courseJoinController.joinCourse)
 router.post("/InviteViaEmail", courseJoinController.inviteViaEmail);
+router.post("/LeaveCourse", courseJoinController.leaveCourse);
 
 module.exports = router;
