@@ -28,13 +28,14 @@ module.exports = {
 
   async leaveCourse(userId, courseId) {
     const courseJoin = await courseJoinModel.single(userId, courseId);
+    console.log("join", courseJoin);
     if (!courseJoin) {
       return { error: errorMessageConstant.ALREADY_LEAVED_COURSE };
     }
 
     await courseJoinModel.del({
-      course_id: courseId,
-      user_id: userId,
+      course_id: courseJoin.course_id,
+      user_id: courseJoin.user_id,
     });
     return { error: null };
   },
@@ -65,6 +66,12 @@ module.exports = {
     return members;
   },
 
+  async deleteCourseById(courseId) {
+    await courseJoinModel.delByCourseId({
+      course_id: courseId,
+    });
+    return { error: null };
+  },
   async getInvitationCode(courseId, currentUserId, role) {
     const courseJoin = await courseJoinModel.single(currentUserId, courseId);
 

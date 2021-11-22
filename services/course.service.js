@@ -7,11 +7,12 @@ module.exports = {
     return await courseModel.all(userId);
   },
 
-  async addCourse(name, hostId, topic = null, thumbnail = null) {
+  async addCourse(name, hostId, code = null, thumbnail = null) {
     const course = {
       course_name: name,
       course_hostid: hostId,
-      course_topic: topic,
+      course_code: code,
+      course_topic: "",
       course_createdate: new Date(),
       course_thumbnail:
         thumbnail ||
@@ -34,5 +35,9 @@ module.exports = {
 
   async getCourseById(id) {
     return await courseModel.single(id);
+  },
+
+  async updateInfo(entity) {
+    return await courseModel.patch(entity);
   },
 };

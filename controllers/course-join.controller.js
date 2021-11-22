@@ -112,4 +112,18 @@ module.exports = {
       },
     });
   },
+
+  async leaveCourse(req, res, next) {
+    const { user_id } = req.user;
+    const { course_id } = req.body;
+
+    await courseJoinService.leaveCourse(user_id, course_id);
+
+    res.json({
+      ...defaultRes,
+      content: {
+        update: true,
+      },
+    });
+  },
 };

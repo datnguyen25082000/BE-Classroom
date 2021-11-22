@@ -14,7 +14,7 @@ module.exports = {
   },
 
   del(entity) {
-    const condition = { idclass: entity.idclass };
+    const condition = { course_id: entity.course_id };
     return db.del(condition, TBL_COURSES);
   },
 
@@ -28,8 +28,8 @@ module.exports = {
   },
 
   patch(entity) {
-    const condition = { userId: entity.userId };
-    delete entity.userId;
+    const condition = { course_id: entity.course_id };
+    delete entity.course_id;
     return db.patch(entity, condition, TBL_COURSES);
   },
 };

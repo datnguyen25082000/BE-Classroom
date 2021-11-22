@@ -11,4 +11,6 @@ router.post("/DeleteCourse", courseController.delete);
 
 router.get("/GetOneCourse", courseController.get);
 
+router.post("/UpdateCourseInfo", courseController.updateInfo);
+
 module.exports = router;
