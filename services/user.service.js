@@ -73,4 +73,21 @@ module.exports = {
 
     return user;
   },
+
+  async findUserByUsername2(username) {
+    const user = await userModel.findByUsername(username);
+
+    return user;
+  },
+
+  async updateInfo(username, entity) {
+    const user = await userModel.findByUsername(username);
+
+    if (user) {
+      await userModel.patch({ ...entity, user_username: username });
+      return true;
+    }
+
+    return false;
+  },
 };

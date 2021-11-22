@@ -71,11 +71,21 @@ module.exports = {
   },
 
   async getCurrentUser(req, res, next) {
+    const { user_username } = req.user;
+
+    const result = await userService.findUserByUsername(user_username, 0);
+
+    const user = {
+      user_username: result.user_username,
+      user_id: result.user_id,
+      user_displayname: result.user_displayname,
+    };
+
     res.json({
       result: 0,
       message: "",
       content: {
-        user: req.user.user_username,
+        user: user,
       },
     });
   },
