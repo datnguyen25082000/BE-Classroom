@@ -83,17 +83,8 @@ module.exports = {
     const { email, course_id, teacher_invite } = req.body;
     let result = false;
 
-    const token = jwt.sign(
-      {
-        email: email,
-        course_id: course_id,
-        teacher_invite: teacher_invite,
-      },
-      process.env.JWT_ACCOUNT_ACTIVATION,
-      {
-        expiresIn: "1d",
-      }
-    );
+    const role = teacher_invite ? userRoleConstant.TEACHER : userRoleConstant.STUDENT
+    const invitationCode = await courseJoinService.getInvitationCode(course_id, req.user.user_id, role)
 
     // content of confirm mail
     var content = "";
@@ -104,7 +95,7 @@ module.exports = {
                 <h3>Chào mừng bạn đến với hệ thống lớp học myclassroom</h3>
                 <p>Bạn có một lời mời tham gia lớp học đến từ tài khoản dat@gmail.com</p>
                 <button>
-                  <a href='http://localhost:5000/api/auth/AcceptInvite?token=${token}'>Đồng ý tham gia</a>
+                  <a href='${process.env.APP_URL}classroom/join/${invitationCode}'>Đồng ý tham gia</a>
                 </button>
             </div>
         </div>
