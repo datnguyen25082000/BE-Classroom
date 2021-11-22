@@ -3,6 +3,7 @@ const courseModel = require("../model/course.model");
 const userModel = require("../model/user.model");
 const userRoleConstant = require("../constants/user-role.constant");
 const errorMessageConstant = require("../constants/error-message.constants");
+const jwt = require("jsonwebtoken");
 
 module.exports = {
   async joinCourse(userId, courseId, userRole = userRoleConstant.STUDENT) {
@@ -12,7 +13,6 @@ module.exports = {
     }
 
     const courseJoin = await courseJoinModel.single(userId, courseId);
-    console.log("courseJoin: ", courseJoin);
     if (courseJoin) {
       return { error: errorMessageConstant.ALREADY_JOINED_COURSE };
     }
@@ -42,7 +42,6 @@ module.exports = {
 
   async getAllCoursesOfUser(userId) {
     const courseJoins = await courseJoinModel.allByUser(userId);
-    console.log("coursJoins: ", courseJoins);
     let courses = [];
     if (courseJoins) {
       for (const courseJoin of courseJoins) {
@@ -50,18 +49,15 @@ module.exports = {
         courses.push(course);
       }
     }
-    console.log("courses: ", courses);
 
     return courses;
   },
 
   async getAllMembersOfCourse(courseId) {
     const courseJoins = await courseJoinModel.allByCourse(courseId);
-    console.log("courseJoins: ", courseJoins);
     const members = [];
     for (const courseJoin of courseJoins) {
       const user = await userModel.findByUserId(courseJoin.user_id);
-      console.log("user: ", user);
       members.push({
         ...user,
         user_role: courseJoin.user_role,
@@ -76,4 +72,51 @@ module.exports = {
     });
     return { error: null };
   },
+  async getInvitationCode(courseId, currentUserId, role) {
+    const courseJoin = await courseJoinModel.single(currentUserId, courseId);
+
+    if (!havePermissionToGetInvitationCode(courseJoin)) {
+      return {
+        error: errorMessageConstant.NOT_HAVE_PERMISSION,
+      };
+    }
+
+    const payload = {
+      courseId,
+      role,
+    };
+
+    const code = jwt.sign(payload, process.env.JWT_INVITATION_CODE);
+
+    return { code };
+  },
+
+  async joinCourseByInvitationCode(code, userId) {
+    const { courseId, role } = jwt.verify(
+      code,
+      process.env.JWT_INVITATION_CODE
+    );
+
+    const course = await courseModel.single(courseId);
+
+    if (!course) {
+      return { error: errorMessageConstant.COURSE_NOT_EXIST };
+    }
+
+    await courseJoinModel.add({
+      course_id: courseId,
+      user_id: userId,
+      user_role: role,
+    });
+
+    return { courseId };
+  },
+};
+
+const havePermissionToGetInvitationCode = (courseJoin) => {
+  return (
+    courseJoin &&
+    (courseJoin.user_role === userRoleConstant.TEACHER ||
+      courseJoin.user_role === userRoleConstant.HOST)
+  );
 };
