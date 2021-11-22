@@ -1,6 +1,7 @@
 const courseJoinService = require("../services/course-join.service");
 const MailService = require("../utils/mail");
 const jwt = require("jsonwebtoken");
+const userRoleConstant = require("../constants/user-role.constant");
 
 const defaultRes = {
   result: 0,
@@ -43,6 +44,38 @@ module.exports = {
       });
     } else {
       res.status(200).json(defaultRes);
+    }
+  },
+
+  async getInvitationCode(req, res, next) {
+    const result = await courseJoinService.getInvitationCode(req.query.courseId, req.user.user_id, req.query.role)
+
+    if (result.error) {
+      res.status(404).json({
+        ...defaultRes,
+        message: result.error
+      })
+    } else {
+      res.status(200).json({
+        ...defaultRes,
+        content: result.code
+      })
+    }
+  },
+
+  async joinCourseViaInvitationCode(req, res, next) {
+    const result = await courseJoinService.joinCourseByInvitationCode(req.query.code, req.user.user_id)
+
+    if (result.error) {
+      res.status(404).json({
+        ...defaultRes,
+        message: result.error
+      })
+    } else {
+      res.status(200).json({
+        ...defaultRes,
+        content: result.courseId
+      })
     }
   },
 
