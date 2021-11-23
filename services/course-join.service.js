@@ -103,6 +103,12 @@ module.exports = {
       return { error: errorMessageConstant.COURSE_NOT_EXIST };
     }
 
+    const courseJoin = await courseJoinModel.single(userId, courseId);
+
+    if (courseJoin) {
+      return { error: errorMessageConstant.ALREADY_JOINED_COURSE };
+    }
+
     await courseJoinModel.add({
       course_id: courseId,
       user_id: userId,
