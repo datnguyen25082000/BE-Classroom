@@ -44,6 +44,7 @@ CREATE TABLE `coursejoin` (
 
 LOCK TABLES `coursejoin` WRITE;
 /*!40000 ALTER TABLE `coursejoin` DISABLE KEYS */;
+INSERT INTO `coursejoin` VALUES (17,6,2),(18,6,2),(19,6,2);
 /*!40000 ALTER TABLE `coursejoin` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -66,7 +67,7 @@ CREATE TABLE `courses` (
   PRIMARY KEY (`course_id`),
   KEY `course_hostid` (`course_hostid`),
   CONSTRAINT `courses_ibfk_1` FOREIGN KEY (`course_hostid`) REFERENCES `users` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=20 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -75,6 +76,7 @@ CREATE TABLE `courses` (
 
 LOCK TABLES `courses` WRITE;
 /*!40000 ALTER TABLE `courses` DISABLE KEYS */;
+INSERT INTO `courses` VALUES (17,'Web nâng cao',6,'2021-11-23 21:22:26','https://ak.picdn.net/shutterstock/videos/19066813/thumb/12.jpg','',NULL,''),(18,'Lập trình window',6,'2021-11-23 21:22:33','https://ak.picdn.net/shutterstock/videos/19066813/thumb/12.jpg','',NULL,''),(19,'Phát triển ứng dụng di động',6,'2021-11-23 21:22:49','https://ak.picdn.net/shutterstock/videos/19066813/thumb/12.jpg','',NULL,'');
 /*!40000 ALTER TABLE `courses` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -100,7 +102,7 @@ CREATE TABLE `users` (
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `type_user_name` (`user_type`,`user_username`),
   UNIQUE KEY `student_id` (`user_studentid`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -109,7 +111,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (6,0,'admin','Quản trị viên','$2b$10$vyVtRcQzpqsLNg8/auCtwO4ZQYqhJyrcFznfWJKNR0GsIe7xy08Uq',NULL,NULL,NULL,NULL,NULL,NULL);
+INSERT INTO `users` VALUES (6,0,'admin','Quản trị viên','$2b$10$vyVtRcQzpqsLNg8/auCtwO4ZQYqhJyrcFznfWJKNR0GsIe7xy08Uq',NULL,NULL,NULL,NULL,NULL,NULL),(7,1,'1130674984401221','Văn Đức',NULL,NULL,NULL,NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -122,4 +124,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-11-23 18:49:02
+-- Dump completed on 2021-11-23 21:23:39
