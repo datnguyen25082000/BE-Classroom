@@ -48,43 +48,57 @@ module.exports = {
   },
 
   async getInvitationCode(req, res, next) {
-    const result = await courseJoinService.getInvitationCode(req.query.courseId, req.user.user_id, req.query.role)
+    const result = await courseJoinService.getInvitationCode(
+      req.query.courseId,
+      req.user.user_id,
+      req.query.role
+    );
 
     if (result.error) {
       res.status(404).json({
         ...defaultRes,
-        message: result.error
-      })
+        message: result.error,
+      });
     } else {
       res.status(200).json({
         ...defaultRes,
-        content: result.code
-      })
+        content: result.code,
+      });
     }
   },
 
   async joinCourseViaInvitationCode(req, res, next) {
-    const result = await courseJoinService.joinCourseByInvitationCode(req.query.code, req.user.user_id)
+    const result = await courseJoinService.joinCourseByInvitationCode(
+      req.query.code,
+      req.user.user_id
+    );
 
     if (result.error) {
       res.status(404).json({
         ...defaultRes,
-        message: result.error
-      })
+        message: result.error,
+      });
     } else {
       res.status(200).json({
         ...defaultRes,
-        content: result.courseId
-      })
+        content: result.courseId,
+      });
     }
   },
 
   async inviteViaEmail(req, res, next) {
     const { email, course_id, teacher_invite } = req.body;
+
     let result = false;
 
-    const role = teacher_invite ? userRoleConstant.TEACHER : userRoleConstant.STUDENT
-    const invitationCode = await courseJoinService.getInvitationCode(course_id, req.user.user_id, role)
+    const role = teacher_invite
+      ? userRoleConstant.TEACHER
+      : userRoleConstant.STUDENT;
+    const invitationCode = await courseJoinService.getInvitationCode(
+      course_id,
+      req.user.user_id,
+      role
+    );
 
     // content of confirm mail
     var content = "";
@@ -93,10 +107,9 @@ module.exports = {
             <div>
                 <h1>NTD MY CLASSROOM</h1>
                 <h3>Chào mừng bạn đến với hệ thống lớp học myclassroom</h3>
-                <p>Bạn có một lời mời tham gia lớp học đến từ tài khoản dat@gmail.com</p>
-                <button>
-                  <a href='${process.env.APP_URL}classroom/join/${invitationCode}'>Đồng ý tham gia</a>
-                </button>
+                <p>Bạn có một lời mời tham gia lớp học đến từ tài khoản ${req.user.user_displayname}</p>
+                <p>Để tham gia khóa học, vui lòng truy cập vào đường dẫn bên dưới</p>
+                ${process.env.APP_URL}classroom/join/${invitationCode.code}
             </div>
         </div>
     `;
