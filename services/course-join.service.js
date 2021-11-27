@@ -28,7 +28,6 @@ module.exports = {
 
   async leaveCourse(userId, courseId) {
     const courseJoin = await courseJoinModel.single(userId, courseId);
-    console.log("join", courseJoin);
     if (!courseJoin) {
       return { error: errorMessageConstant.ALREADY_LEAVED_COURSE };
     }
