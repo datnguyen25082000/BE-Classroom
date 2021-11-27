@@ -8,4 +8,5 @@ module.exports = function (app) {
   app.use("/api/courses", passport.authenticate, require("../routes/course.route"));
   app.use("/api/course-join", passport.authenticate, require("../routes/course-join.route"));
   app.use("/api/user", passport.authenticate, require("../routes/user.route"));
+  app.use('/api/assignment-category', passport.authenticate, require('../routes/assignment-category.route'))
 };
