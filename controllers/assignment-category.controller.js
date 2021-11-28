@@ -1,7 +1,15 @@
 const assignmentCategoryService = require("../services/assignment-category.service");
 
 module.exports = {
-    async add(req, res, next) {
+  async getAllByCourse(req, res, next) {
+    const result = await assignmentCategoryService.getAllByCourse(
+      req.query.course_id,
+      req.user.user_id
+    );
+
+    processResult(result, res);
+  },
+  async add(req, res, next) {
     const result = await assignmentCategoryService.add(
       req.body.name,
       req.body.point,
@@ -38,7 +46,7 @@ module.exports = {
       req.user.user_id
     );
 
-    return processResult(result, res)
+    return processResult(result, res);
   },
 };
 
@@ -53,6 +61,8 @@ const processResult = (result, res) => {
       ...defaultRes,
       message: result.error,
     });
+  } else if (result.data) {
+    res.status(200).json({ ...defaultRes, content: result.data });
   } else {
     res.status(200).json(defaultRes);
   }

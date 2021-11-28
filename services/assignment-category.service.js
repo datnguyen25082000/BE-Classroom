@@ -6,6 +6,33 @@ const courseJoinModel = require("../model/course-join.model");
 const userRoleConstant = require("../constants/user-role.constant");
 
 module.exports = {
+  async getAllByCourse(course_id, current_user_id) {
+    const course = await courseModel.single(course_id);
+    if (!course) {
+      return {
+        error: errorMessageConstant.COURSE_NOT_EXIST,
+      };
+    }
+
+    const havePermission = await isUserHavePermissionToView(
+      current_user_id,
+      course_id
+    );
+    if (!havePermission) {
+      return {
+        error: errorMessageConstant.NOT_HAVE_PERMISSION,
+      };
+    }
+
+    const assignmentCategories = await assignmentCategoryModel.allByCourse(
+      course_id
+    );
+    return {
+      error: null,
+      data: assignmentCategories,
+    };
+  },
+
   async add(name, point, course_id, current_user_id) {
     const isNameExist = await isAssignmentCategoryNameExist(name, course_id);
     if (isNameExist) {
@@ -21,7 +48,7 @@ module.exports = {
       };
     }
 
-    const havePermission = await isUserHavePermission(
+    const havePermission = await isUserHavePermissionToEdit(
       current_user_id,
       course_id
     );
@@ -52,8 +79,7 @@ module.exports = {
       return { error: errorMessageConstant.ASSIGNMENT_CATEGORY_NOT_EXIST };
     }
 
-
-    const havePermission = await isUserHavePermission(
+    const havePermission = await isUserHavePermissionToEdit(
       current_user_id,
       assignmentCategory.course_id
     );
@@ -93,7 +119,7 @@ module.exports = {
       return { error: errorMessageConstants.ASSIGNMENT_CATEGORY_NOT_EXIST };
     }
 
-    const havePermission = await isUserHavePermission(
+    const havePermission = await isUserHavePermissionToEdit(
       current_user_id,
       assignmentCategory.course_id
     );
@@ -115,7 +141,7 @@ module.exports = {
         return { error: errorMessageConstants.ASSIGNMENT_CATEGORY_NOT_EXIST };
       }
 
-      const havePermission = await isUserHavePermission(
+      const havePermission = await isUserHavePermissionToEdit(
         current_user_id,
         currentCategory.course_id
       );
@@ -135,16 +161,28 @@ module.exports = {
 };
 
 const isAssignmentCategoryNameExist = async (name, courseId) => {
-  const assignmentCategory = await assignmentCategoryModel.singleByName(name, courseId);
+  const assignmentCategory = await assignmentCategoryModel.singleByName(
+    name,
+    courseId
+  );
   const isExist = assignmentCategory !== null;
   return isExist;
 };
 
-const isUserHavePermission = async (userId, courseId) => {
+const isUserHavePermissionToEdit = async (userId, courseId) => {
   const courseJoin = await courseJoinModel.single(userId, courseId);
 
   if (courseJoin && isTeacherOrHost(courseJoin.user_role)) {
-    return true
+    return true;
+  }
+  return false;
+};
+
+const isUserHavePermissionToView = async (userId, courseId) => {
+  const courseJoin = await courseJoinModel.single(userId, courseId);
+
+  if (courseJoin) {
+    return true;
   }
   return false;
 };
