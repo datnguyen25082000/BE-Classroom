@@ -60,15 +60,24 @@ module.exports = {
 
     const currentFinalPosition =
       await assignmentCategoryModel.currentFinalPositionOfCourse(course_id);
-
-    assignmentCategoryModel.add(
+    const position = currentFinalPosition + 1;
+    const result = await assignmentCategoryModel.add(
       name,
       point,
       course_id,
-      currentFinalPosition + 1
+      position
     );
 
-    return { error: null };
+    return {
+      error: null,
+      data: {
+        id: result.insertId,
+        name,
+        course_id,
+        point,
+        position,
+      },
+    };
   },
 
   async update(assignmentCategoryId, newName, newPoint, current_user_id) {
@@ -106,8 +115,8 @@ module.exports = {
     assignmentCategory.point = newPoint;
 
     assignmentCategoryModel.patch(assignmentCategory);
-
-    return { error: null };
+  
+    return { error: null, data: assignmentCategory };
   },
 
   async delete(assignmentCategoryId, current_user_id) {
@@ -156,7 +165,7 @@ module.exports = {
     }
 
     assignmentCategoryModel.patchMany(currentAssignmentCategories);
-    return { error: null };
+    return { error: null, data: currentAssignmentCategories };
   },
 };
 
