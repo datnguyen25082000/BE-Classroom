@@ -21,6 +21,7 @@
 
 DROP DATABASE IF EXISTS `granding_system`;
 CREATE DATABASE granding_system;
+USE granding_system;
 DROP TABLE IF EXISTS `assignment_category`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
@@ -30,21 +31,50 @@ CREATE TABLE `assignment_category` (
   `course_id` int NOT NULL,
   `point` int NOT NULL,
   `position` int NOT NULL,
+  `isFinalized` tinyint(1) NOT NULL DEFAULT FALSE,
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`,`course_id`),
   KEY `course_id` (`course_id`),
   CONSTRAINT `assignment_category_ibfk_1` FOREIGN KEY (`course_id`) REFERENCES `courses` (`course_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
 -- Dumping data for table `assignment_category`
 --
-USE granding_system;
+
 LOCK TABLES `assignment_category` WRITE;
 /*!40000 ALTER TABLE `assignment_category` DISABLE KEYS */;
-INSERT INTO `assignment_category` VALUES (1,'Cuối kì',18,90,1),(2,'Giữa kì',18,20,2),(3,'Quá trình',18,20,0);
+INSERT INTO `assignment_category` VALUES (1,'Cuối kì',18,25,1,FALSE),(2,'Giữa kì',18,20,2,FALSE),(3,'Quá trình',18,20,0,FALSE),(5,'Test 2',18,20,4,FALSE),(6,'Test 1',18,20,5,FALSE),(7,'Giữa kì',17,100,0,1),(8,'Cuối kì',17,50,1,FALSE);
 /*!40000 ALTER TABLE `assignment_category` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
+-- Table structure for table `course_students`
+--
+
+DROP TABLE IF EXISTS `course_students`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `course_students` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `student_id` varchar(20) NOT NULL,
+  `full_name` varchar(40) NOT NULL,
+  `course_id` int NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `course_id` (`course_id`),
+  CONSTRAINT `course_students_ibfk_1` FOREIGN KEY (`course_id`) REFERENCES `courses` (`course_id`)
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `course_students`
+--
+
+LOCK TABLES `course_students` WRITE;
+/*!40000 ALTER TABLE `course_students` DISABLE KEYS */;
+INSERT INTO `course_students` VALUES (11,'18120324','Nguyễn Văn Đức',18),(12,'18120333','Nguyễn Tấn Đạt',18);
+/*!40000 ALTER TABLE `course_students` ENABLE KEYS */;
 UNLOCK TABLES;
 
 --
@@ -108,6 +138,36 @@ INSERT INTO `courses` VALUES (17,'Web nâng cao',6,'2021-11-23 21:22:26','https:
 UNLOCK TABLES;
 
 --
+-- Table structure for table `score`
+--
+
+DROP TABLE IF EXISTS `score`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `score` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `assignment_category_id` int NOT NULL,
+  `point` float DEFAULT NULL,
+  `course_student_id` int NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `assignment_category_id` (`assignment_category_id`),
+  KEY `course_student_id` (`course_student_id`),
+  CONSTRAINT `score_ibfk_2` FOREIGN KEY (`assignment_category_id`) REFERENCES `assignment_category` (`id`),
+  CONSTRAINT `score_ibfk_3` FOREIGN KEY (`course_student_id`) REFERENCES `course_students` (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `score`
+--
+
+LOCK TABLES `score` WRITE;
+/*!40000 ALTER TABLE `score` DISABLE KEYS */;
+INSERT INTO `score` VALUES (3,1,90,11),(4,1,100,12);
+/*!40000 ALTER TABLE `score` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `users`
 --
 
@@ -151,4 +211,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-11-27 21:45:06
+-- Dump completed on 2021-12-18 15:43:26
