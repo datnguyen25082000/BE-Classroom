@@ -12,4 +12,12 @@ module.exports = {
       `delete from ${TBL_SCORE} where assignment_category_id = ${assignmentCategoryId}`
     );
   },
+
+  async getAllByCourseStudent(courseStudentId) {
+    const results = await db.load(
+      `select * from ${TBL_SCORE} where course_student_id = ${courseStudentId}`
+    );
+
+    return results.length ? results : null;
+  },
 };

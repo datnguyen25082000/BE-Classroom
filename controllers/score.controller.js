@@ -1,9 +1,18 @@
-const scoreService = require('../services/score.service')
+const scoreService = require("../services/score.service");
 module.exports = {
   async addManyByAssignmentCategory(req, res, next) {
     const result = await scoreService.addManyByAssignmentCategory(
       req.body.scores,
       req.body.assignment_category_id,
+      req.user.user_id
+    );
+
+    processResult(result, res);
+  },
+
+  async getAllByCourse(req, res, next) {
+    const result = await scoreService.getAllByCourse(
+      req.query.course_id,
       req.user.user_id
     );
 

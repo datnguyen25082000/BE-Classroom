@@ -4,6 +4,7 @@ const userRoleConstant = require("../constants/user-role.constant");
 const courseStudentsModel = require("../model/course-students.model");
 const assignmentCategoryModel = require("../model/assignment-category.model");
 const scoreModel = require("../model/score.model");
+const courseModel = require("../model/course.model");
 
 module.exports = {
   async addManyByAssignmentCategory(
@@ -69,6 +70,46 @@ module.exports = {
     return {
       error: null,
       data: savedScores,
+    };
+  },
+
+  async getAllByCourse(course_id, current_user_id) {
+    const course = await courseModel.single(course_id);
+    if (!course) {
+      return {
+        error: errorMessageConstants.COURSE_NOT_EXIST,
+      };
+    }
+
+    const havePermission = await isUserHavePermissionToEdit(
+      current_user_id,
+      course_id
+    );
+    if (!havePermission) {
+      return {
+        error: errorMessageConstants.NOT_HAVE_PERMISSION,
+      };
+    }
+
+    const courseStudents = await courseStudentsModel.getAllByCourse(course_id);
+    if (!courseStudents) {
+      return {
+        error: null,
+        data: null,
+      };
+    }
+
+    const scores = [];
+    for (const courseStudent of courseStudents) {
+      const scoresOfStudent = await scoreModel.getAllByCourseStudent(
+        courseStudent.id
+      );
+      scores.push({ ...courseStudent, scoresOfStudent });
+    }
+
+    return {
+      error: null,
+      data: scores,
     };
   },
 };
