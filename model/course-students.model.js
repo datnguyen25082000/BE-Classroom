@@ -25,4 +25,12 @@ module.exports = {
 
     return results.length ? results : null;
   },
+
+  async getByStudentIdAndCourse(studentId, courseId) {
+    const results = await db.load(
+      `select * from ${TBL_COURSE_STUDENTS} where course_id = ${courseId} and student_id = ${studentId}`
+    );
+
+    return results.length ? results[0] : null;
+  },
 };

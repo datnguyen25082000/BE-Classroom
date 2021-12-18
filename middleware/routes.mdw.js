@@ -26,4 +26,9 @@ module.exports = function (app) {
     passport.authenticate,
     require("../routes/course-students.route")
   );
+  app.use(
+    "/api/score",
+    passport.authenticate,
+    require("../routes/score.route")
+  );
 };
