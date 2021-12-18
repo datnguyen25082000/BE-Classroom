@@ -46,6 +46,16 @@ module.exports = {
     return rows[0];
   },
 
+  async findByStudentId(studentId) {
+    const rows = await db.load(
+      `select * from ${TBL_USERS} where user_studentid = '${studentId}' `
+    );
+
+    if (rows.length === 0) return null;
+
+    return rows[0];
+  },
+
   patch(entity) {
     const condition = { user_username: entity.user_username };
     delete entity.user_username;

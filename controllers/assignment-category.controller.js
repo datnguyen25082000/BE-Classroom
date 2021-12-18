@@ -48,6 +48,15 @@ module.exports = {
 
     return processResult(result, res);
   },
+
+  async finalize(req, res, next) {
+    const result = await assignmentCategoryService.finalize(
+      req.body.assignmentCategoryId,
+      req.user.user_id
+    );
+
+    return processResult(result, res);
+  },
 };
 
 const processResult = (result, res) => {

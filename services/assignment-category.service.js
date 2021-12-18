@@ -167,6 +167,31 @@ module.exports = {
     assignmentCategoryModel.patchMany(currentAssignmentCategories);
     return { error: null, data: currentAssignmentCategories };
   },
+
+  async finalize(assignmentCategoryId, current_user_id) {
+    let assignmentCategory = await assignmentCategoryModel.single(
+      assignmentCategoryId
+    );
+    if (!assignmentCategory) {
+      return { error: errorMessageConstant.ASSIGNMENT_CATEGORY_NOT_EXIST };
+    }
+
+    const havePermission = await isUserHavePermissionToEdit(
+      current_user_id,
+      assignmentCategory.course_id
+    );
+    if (!havePermission) {
+      return {
+        error: errorMessageConstant.NOT_HAVE_PERMISSION,
+      };
+    }
+
+    assignmentCategory.isFinalized = true    
+
+    assignmentCategoryModel.patch(assignmentCategory);
+
+    return { error: null, data: assignmentCategory };
+  }
 };
 
 const isAssignmentCategoryNameExist = async (name, courseId) => {

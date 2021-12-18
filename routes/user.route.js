@@ -33,4 +33,6 @@ router.post(
   userController.updateAvatar
 );
 
+router.get("/find-user-by-student-id", userController.findUserByStudentId);
+
 module.exports = router;

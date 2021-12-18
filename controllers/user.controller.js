@@ -67,4 +67,13 @@ module.exports = {
       },
     });
   },
+
+  async findUserByStudentId(req, res, next) {
+    const user = await userService.findUserByStudentId(req.query.studentId);
+    res.json({
+      result: 0,
+      message: "",
+      content: user,
+    });
+  },
 };
