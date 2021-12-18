@@ -90,4 +90,10 @@ module.exports = {
 
     return false;
   },
+
+  async findUserByStudentId(studentId) {
+    const user = await userModel.findByStudentId(studentId)
+
+    return user
+  }
 };
