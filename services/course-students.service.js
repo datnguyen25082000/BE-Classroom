@@ -66,7 +66,7 @@ module.exports = {
       );
 
       if (existStudent) {
-        students = students.filter((x) => x !== student.student_id);
+        students = students.filter((x) => x.student_id !== student.student_id);
       }
     }
 

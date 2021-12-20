@@ -144,12 +144,15 @@ module.exports = {
       );
       console.log("score: ", score);
 
-      if (score) scores.push(score);
+      if (score && score.length) scores.push(score[0]);
     }
 
     return {
       error: null,
-      data: scores,
+      data: {
+        score: scores,
+        student: student,
+      },
     };
   },
 };
