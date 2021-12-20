@@ -5,6 +5,7 @@ const courseStudentsModel = require("../model/course-students.model");
 const assignmentCategoryModel = require("../model/assignment-category.model");
 const scoreModel = require("../model/score.model");
 const courseModel = require("../model/course.model");
+const userModel = require("../model/user.model");
 
 module.exports = {
   async addManyByAssignmentCategory(
@@ -105,6 +106,45 @@ module.exports = {
         courseStudent.id
       );
       scores.push({ ...courseStudent, scoresOfStudent });
+    }
+
+    return {
+      error: null,
+      data: scores,
+    };
+  },
+
+  async getAllByCourseAndStudentId(course_id, current_user_id) {
+    const user = await userModel.findByUserId(current_user_id);
+    if (!user.user_studentid) {
+      return {
+        error: null,
+      };
+    }
+
+    const student = await courseStudentsModel.getByStudentIdAndCourse(
+      user.user_studentid,
+      course_id
+    );
+    if (!student) {
+      return {
+        error: null,
+      };
+    }
+
+    const assignmentCategories = await assignmentCategoryModel.allByCourse(
+      course_id
+    );
+
+    const scores = [];
+    for (const assignmentCategory of assignmentCategories) {
+      const score = await scoreModel.getByStudentAndAssignmentCategory(
+        student.id,
+        assignmentCategory.id
+      );
+      console.log("score: ", score);
+
+      if (score) scores.push(score);
     }
 
     return {

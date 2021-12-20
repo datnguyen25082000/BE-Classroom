@@ -20,4 +20,12 @@ module.exports = {
 
     return results.length ? results : null;
   },
+
+  async getByStudentAndAssignmentCategory(courseStudentId, assignmentCategoryId) {
+    const results = await db.load(
+      `select * from ${TBL_SCORE} where course_student_id = '${courseStudentId}' and assignment_category_id = ${assignmentCategoryId}`
+    );
+
+    return results.length ? results : null;
+  },
 };

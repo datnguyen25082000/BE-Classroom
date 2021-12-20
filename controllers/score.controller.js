@@ -18,6 +18,15 @@ module.exports = {
 
     processResult(result, res);
   },
+
+  async getAllByCourseAndCurrentUser(req, res, next) {
+    const result = await scoreService.getAllByCourseAndStudentId(
+      req.query.course_id,
+      req.user.user_id
+    );
+
+    processResult(result, res);
+  },
 };
 
 const processResult = (result, res) => {
