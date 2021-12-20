@@ -3,8 +3,8 @@ const errorMessageConstants = require("../constants/error-message.constants");
 const courseJoinModel = require("../model/course-join.model");
 const userRoleConstant = require("../constants/user-role.constant");
 const courseStudentsModel = require("../model/course-students.model");
-const scoreModel = require('../model/score.model')
-const assignmentCategoryModel = require('../model/assignment-category.model')
+const scoreModel = require("../model/score.model");
+const assignmentCategoryModel = require("../model/assignment-category.model");
 
 module.exports = {
   async getAllByCourse(course_id, current_user_id) {
@@ -59,25 +59,26 @@ module.exports = {
           error: errorMessageConstants.DUPLICATE_STUDENT_ID,
         };
       }
+
+      const existStudent = await courseStudentsModel.getByStudentIdAndCourse(
+        student.student_id,
+        course_id
+      );
+
+      if (existStudent) {
+        students = students.filter((x) => x !== student.student_id);
+      }
     }
 
-    const assignmentCategories = await assignmentCategoryModel.allByCourse(course_id)
-    for (const assignmentCategory of assignmentCategories) {
-      await scoreModel.deleteAllByAssignmentCategory(assignmentCategory.id);
-    }
-    await courseStudentsModel.deleteAllByCourse(course_id);
-
-    const courseStudents = [];
     for (const student of students) {
-      const result = await courseStudentsModel.add(
+      await courseStudentsModel.add(
         student.student_id,
         student.full_name,
         course_id
       );
-
-      courseStudents.push({ ...student, course_id, id: result.insertId });
-      
     }
+
+    const courseStudents = await courseStudentsModel.getAllByCourse(course_id);
 
     return {
       error: null,
