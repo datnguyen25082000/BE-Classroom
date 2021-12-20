@@ -115,7 +115,7 @@ module.exports = {
     assignmentCategory.point = newPoint;
 
     assignmentCategoryModel.patch(assignmentCategory);
-  
+
     return { error: null, data: assignmentCategory };
   },
 
@@ -186,12 +186,13 @@ module.exports = {
       };
     }
 
-    assignmentCategory.isFinalized = true    
+    const temp = assignmentCategory.isFinalized;
+    assignmentCategory.isFinalized = !temp;
 
     assignmentCategoryModel.patch(assignmentCategory);
 
     return { error: null, data: assignmentCategory };
-  }
+  },
 };
 
 const isAssignmentCategoryNameExist = async (name, courseId) => {
