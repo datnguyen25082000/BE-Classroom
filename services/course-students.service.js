@@ -3,6 +3,8 @@ const errorMessageConstants = require("../constants/error-message.constants");
 const courseJoinModel = require("../model/course-join.model");
 const userRoleConstant = require("../constants/user-role.constant");
 const courseStudentsModel = require("../model/course-students.model");
+const scoreModel = require('../model/score.model')
+const assignmentCategoryModel = require('../model/assignment-category.model')
 
 module.exports = {
   async getAllByCourse(course_id, current_user_id) {
@@ -59,6 +61,10 @@ module.exports = {
       }
     }
 
+    const assignmentCategories = await assignmentCategoryModel.allByCourse(course_id)
+    for (const assignmentCategory of assignmentCategories) {
+      await scoreModel.deleteAllByAssignmentCategory(assignmentCategory.id);
+    }
     await courseStudentsModel.deleteAllByCourse(course_id);
 
     const courseStudents = [];
