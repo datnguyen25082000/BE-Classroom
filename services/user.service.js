@@ -217,4 +217,30 @@ module.exports = {
 
     return { success: true };
   },
+
+  async resetPassword(code) {
+    const { email } = jwt.verify(code, process.env.JWT_FORGOT_PASSWORD);
+
+    const user = await userModel.findByEmail(email);
+    if (!user) {
+      return {
+        success: false,
+        data: errorMessageConstants.USER_WITH_THIS_EMAIL_NOT_EXISTS,
+      };
+    }
+
+    const newPassword = Math.random().toString(36).slice(-8);
+    const hashPassword = await bcrypt.hash(newPassword, 10);
+
+    user.user_password = hashPassword;
+    await userModel.patch(user)
+
+    return {
+      success: true,
+      data: {
+        username: user.user_username,
+        password: newPassword
+      }
+    }
+  },
 };

@@ -2,7 +2,7 @@ const userService = require("../services/user.service");
 const errorMessageConstants = require("../constants/error-message.constants");
 const displayMessageConstants = require("../constants/display-message.constants");
 const jwt = require("jsonwebtoken");
-const processResult = require("../utils/api-helper").processResult
+const processResult = require("../utils/api-helper").processResult;
 
 const jwtOptions = {
   secretOrKey: process.env.JWTPRIVATEKEY,
@@ -104,11 +104,16 @@ module.exports = {
 
   async activateUser(req, res, next) {
     const result = await userService.activateUser(req.body.code);
-    processResult(result, res)
+    processResult(result, res);
   },
 
   async forgotPassword(req, res, next) {
-    const result = await userService.forgotPassword(req.body.email)
-    processResult(result, res)
-  }
+    const result = await userService.forgotPassword(req.body.email);
+    processResult(result, res);
+  },
+
+  async resetPassword(req, res, next) {
+    const result = await userService.resetPassword(req.body.code);
+    processResult(result, res);
+  },
 };
