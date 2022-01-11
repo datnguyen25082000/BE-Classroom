@@ -2,6 +2,7 @@ const userService = require("../services/user.service");
 const errorMessageConstants = require("../constants/error-message.constants");
 const displayMessageConstants = require("../constants/display-message.constants");
 const jwt = require("jsonwebtoken");
+const processResult = require("../utils/api-helper").processResult
 
 const jwtOptions = {
   secretOrKey: process.env.JWTPRIVATEKEY,
@@ -9,9 +10,14 @@ const jwtOptions = {
 
 module.exports = {
   async register(req, res) {
-    const { username, password, fullname } = req.body;
+    const { username, password, fullname, email } = req.body;
 
-    const result = await userService.registerUser(username, password, fullname);
+    const result = await userService.registerUser(
+      username,
+      password,
+      fullname,
+      email
+    );
 
     const defaultRes = {
       result: 0,
@@ -55,18 +61,11 @@ module.exports = {
           token: token,
         },
       });
-    } else if (result.data === errorMessageConstants.USERNAME_NOT_EXIST) {
+    } else {
       res.json({
         ...defaultRes,
-        message: displayMessageConstants.USERNAME_NOT_EXIST,
+        message: result.data,
       });
-    } else if (result.data === errorMessageConstants.INCORRECT_PASSWORD) {
-      res.status(200).json({
-        ...defaultRes,
-        message: displayMessageConstants.INCORRECT_PASSWORD,
-      });
-    } else {
-      res.json(defaultRes);
     }
   },
 
@@ -101,5 +100,10 @@ module.exports = {
     console.log("email", email);
 
     res.redirect("https://w3schools.com");
+  },
+
+  async activateUser(req, res, next) {
+    const result = await userService.activateUser(req.body.code);
+    processResult(result, res)
   },
 };

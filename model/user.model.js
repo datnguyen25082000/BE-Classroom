@@ -34,6 +34,16 @@ module.exports = {
     return rows[0];
   },
 
+  async findByEmail(email) {
+    const rows = await db.load(
+        `select * from ${TBL_USERS} where user_email = '${email}' `
+      );
+
+    if (rows.length === 0) return null;
+
+    return rows[0];
+  },
+
   async findByUserId(userId) {
     let rows;
 
