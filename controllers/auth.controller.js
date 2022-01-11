@@ -106,4 +106,9 @@ module.exports = {
     const result = await userService.activateUser(req.body.code);
     processResult(result, res)
   },
+
+  async forgotPassword(req, res, next) {
+    const result = await userService.forgotPassword(req.body.email)
+    processResult(result, res)
+  }
 };

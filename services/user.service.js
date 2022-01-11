@@ -182,4 +182,39 @@ module.exports = {
 
     return user;
   },
+
+  async forgotPassword(email) {
+    const user = await userModel.findByEmail(email);
+
+    if (!user) {
+      return {
+        success: false,
+        data: errorMessageConstants.USER_WITH_THIS_EMAIL_NOT_EXISTS,
+      };
+    }
+
+    const code = jwt.sign(
+      {
+        email,
+      },
+      process.env.JWT_FORGOT_PASSWORD
+    );
+    const content = `
+        <div style="padding: 10px">
+            <div>
+                <h1>NTD MY CLASSROOM</h1>
+                <h3>Chào mừng bạn đến với hệ thống lớp học myclassroom</h3>
+                <p>Bạn đã chọn tính năng Quên mật khẩu.</p>
+                <p>Để tạo mật khẩu mới, vui lòng truy cập vào đường dẫn bên dưới</p>
+                ${process.env.APP_URL}account/${code}
+            </div>
+        </div>
+      `;
+    mailService.SendMail({
+      email,
+      content,
+    });
+
+    return { success: true };
+  },
 };
