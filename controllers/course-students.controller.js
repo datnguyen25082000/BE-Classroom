@@ -1,4 +1,5 @@
 const courseStudentsService = require("../services/course-students.service");
+const processResult = require("../utils/api-helper").processResult
 
 module.exports = {
   async getAllByCourse(req, res, next) {
@@ -19,22 +20,4 @@ module.exports = {
 
     processResult(result, res);
   },
-};
-
-const processResult = (result, res) => {
-  const defaultRes = {
-    result: 0,
-    message: "",
-    content: {},
-  };
-  if (result.error) {
-    res.status(404).json({
-      ...defaultRes,
-      message: result.error,
-    });
-  } else if (result.data) {
-    res.status(200).json({ ...defaultRes, content: result.data });
-  } else {
-    res.status(200).json(defaultRes);
-  }
 };
