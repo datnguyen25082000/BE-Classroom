@@ -31,12 +31,12 @@ CREATE TABLE `assignment_category` (
   `course_id` int NOT NULL,
   `point` int NOT NULL,
   `position` int NOT NULL,
-  `isFinalized` tinyint(1) NOT NULL DEFAULT FALSE,
+  `isFinalized` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   UNIQUE KEY `name` (`name`,`course_id`),
   KEY `course_id` (`course_id`),
   CONSTRAINT `assignment_category_ibfk_1` FOREIGN KEY (`course_id`) REFERENCES `courses` (`course_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -45,7 +45,7 @@ CREATE TABLE `assignment_category` (
 
 LOCK TABLES `assignment_category` WRITE;
 /*!40000 ALTER TABLE `assignment_category` DISABLE KEYS */;
-INSERT INTO `assignment_category` VALUES (1,'Cuối kì',18,25,1,FALSE),(2,'Giữa kì',18,20,2,FALSE),(3,'Quá trình',18,20,0,FALSE),(5,'Test 2',18,20,4,FALSE),(6,'Test 1',18,20,5,FALSE),(7,'Giữa kì',17,100,0,1),(8,'Cuối kì',17,50,1,FALSE);
+INSERT INTO `assignment_category` VALUES (1,'Cuối kì',18,25,1,0),(2,'Giữa kì',18,20,2,0),(3,'Quá trình',18,20,0,0),(5,'Test 2',18,20,4,0),(6,'Test 1',18,20,5,0),(7,'Giữa kì',17,100,0,0),(8,'Cuối kì',17,50,1,0),(9,'Cuối kì',22,100,0,0),(10,'Giữa kì',22,80,1,0),(11,'Cuối kì',19,100,0,0),(12,'Giữa kì',19,100,1,0);
 /*!40000 ALTER TABLE `assignment_category` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -64,7 +64,7 @@ CREATE TABLE `course_students` (
   PRIMARY KEY (`id`),
   KEY `course_id` (`course_id`),
   CONSTRAINT `course_students_ibfk_1` FOREIGN KEY (`course_id`) REFERENCES `courses` (`course_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -73,7 +73,7 @@ CREATE TABLE `course_students` (
 
 LOCK TABLES `course_students` WRITE;
 /*!40000 ALTER TABLE `course_students` DISABLE KEYS */;
-INSERT INTO `course_students` VALUES (11,'18120324','Nguyễn Văn Đức',18),(12,'18120333','Nguyễn Tấn Đạt',18);
+INSERT INTO `course_students` VALUES (13,'18120324','Nguyễn Văn A',18),(14,'18120333','Nguyễn Văn C',18),(15,'18120555','Trần Thị D',18),(16,'18120367','Đinh Văn Tèo',18),(17,'18120324','Nguyễn Văn A',17),(18,'18120333','Nguyễn Văn C',17),(19,'18120555','Trần Thị D',17),(20,'18120367','Đinh Văn Tèo',17),(21,'1712033','Trần Văn C',17),(22,'1712033','Trần Văn C',22),(23,'18120123','Lê Văn C',22),(24,'1712033','Trần Văn C',19),(25,'18120123','Lê Văn C',19);
 /*!40000 ALTER TABLE `course_students` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -101,7 +101,7 @@ CREATE TABLE `coursejoin` (
 
 LOCK TABLES `coursejoin` WRITE;
 /*!40000 ALTER TABLE `coursejoin` DISABLE KEYS */;
-INSERT INTO `coursejoin` VALUES (17,6,2),(18,6,2),(19,6,2),(20,6,0),(20,9,2),(20,10,0),(20,11,1),(21,9,2);
+INSERT INTO `coursejoin` VALUES (17,6,2),(18,6,2),(19,6,2),(20,6,0),(20,9,2),(20,10,0),(20,11,1),(21,9,2),(22,6,0),(22,12,2);
 /*!40000 ALTER TABLE `coursejoin` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -124,7 +124,7 @@ CREATE TABLE `courses` (
   PRIMARY KEY (`course_id`),
   KEY `course_hostid` (`course_hostid`),
   CONSTRAINT `courses_ibfk_1` FOREIGN KEY (`course_hostid`) REFERENCES `users` (`user_id`)
-) ENGINE=InnoDB AUTO_INCREMENT=22 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -133,7 +133,7 @@ CREATE TABLE `courses` (
 
 LOCK TABLES `courses` WRITE;
 /*!40000 ALTER TABLE `courses` DISABLE KEYS */;
-INSERT INTO `courses` VALUES (17,'Web nâng cao',6,'2021-11-23 21:22:26','https://ak.picdn.net/shutterstock/videos/19066813/thumb/12.jpg','',NULL,''),(18,'Lập trình window',6,'2021-11-23 21:22:33','https://ak.picdn.net/shutterstock/videos/19066813/thumb/12.jpg','',NULL,''),(19,'Phát triển ứng dụng di động',6,'2021-11-23 21:22:49','https://ak.picdn.net/shutterstock/videos/19066813/thumb/12.jpg','',NULL,''),(20,'Phát triển web nâng cao',9,'2021-11-24 20:28:24','https://ak.picdn.net/shutterstock/videos/19066813/thumb/12.jpg','ReactJS','Đào tạo ReactJS',''),(21,'Phát triển di động nâng cao',9,'2021-11-24 20:28:38','https://ak.picdn.net/shutterstock/videos/19066813/thumb/12.jpg','',NULL,'');
+INSERT INTO `courses` VALUES (17,'Web nâng cao',6,'2021-11-23 21:22:26','https://ak.picdn.net/shutterstock/videos/19066813/thumb/12.jpg','',NULL,''),(18,'Lập trình window',6,'2021-11-23 21:22:33','https://ak.picdn.net/shutterstock/videos/19066813/thumb/12.jpg','',NULL,''),(19,'Phát triển ứng dụng di động',6,'2021-11-23 21:22:49','https://ak.picdn.net/shutterstock/videos/19066813/thumb/12.jpg','',NULL,''),(20,'Phát triển web nâng cao',9,'2021-11-24 20:28:24','https://ak.picdn.net/shutterstock/videos/19066813/thumb/12.jpg','ReactJS','Đào tạo ReactJS',''),(21,'Phát triển di động nâng cao',9,'2021-11-24 20:28:38','https://ak.picdn.net/shutterstock/videos/19066813/thumb/12.jpg','',NULL,''),(22,'Test',12,'2021-12-20 14:20:01','https://ak.picdn.net/shutterstock/videos/19066813/thumb/12.jpg','',NULL,'');
 /*!40000 ALTER TABLE `courses` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -154,7 +154,7 @@ CREATE TABLE `score` (
   KEY `course_student_id` (`course_student_id`),
   CONSTRAINT `score_ibfk_2` FOREIGN KEY (`assignment_category_id`) REFERENCES `assignment_category` (`id`),
   CONSTRAINT `score_ibfk_3` FOREIGN KEY (`course_student_id`) REFERENCES `course_students` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=44 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -163,7 +163,7 @@ CREATE TABLE `score` (
 
 LOCK TABLES `score` WRITE;
 /*!40000 ALTER TABLE `score` DISABLE KEYS */;
-INSERT INTO `score` VALUES (3,1,90,11),(4,1,100,12);
+INSERT INTO `score` VALUES (35,3,10,13),(36,10,80,22),(37,9,100,22),(38,10,110,23),(39,9,90,23),(41,12,200,24),(43,12,50,25);
 /*!40000 ALTER TABLE `score` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -186,10 +186,12 @@ CREATE TABLE `users` (
   `user_address` varchar(100) DEFAULT NULL,
   `user_studentid` varchar(20) DEFAULT NULL,
   `user_nameinroom` varchar(45) DEFAULT NULL,
+  `user_is_active` int NOT NULL DEFAULT '0',
+  `user_otp` varchar(6) DEFAULT NULL,
   PRIMARY KEY (`user_id`),
   UNIQUE KEY `type_user_name` (`user_type`,`user_username`),
   UNIQUE KEY `student_id` (`user_studentid`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -198,7 +200,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (6,0,'admin','Quản trị viên','$2b$10$vyVtRcQzpqsLNg8/auCtwO4ZQYqhJyrcFznfWJKNR0GsIe7xy08Uq',NULL,NULL,NULL,NULL,NULL,NULL),(7,1,'1130674984401221','Văn Đức',NULL,'duc@gmail.com',NULL,'0941123123','HCM','18120324','Duc'),(8,0,'test','Nguyễn Văn A','$2b$10$y7RHRPhlV8GVXfwuORmKR.5m6HyZSiT7pW5eQzw1enoz6K.ccft62',NULL,NULL,NULL,NULL,NULL,NULL),(9,0,'usertest1','Nguyễn Văn Tèo','$2b$10$/Dol1FDu/lXcIgSsTzqGSuPAQIRJY72OPyY0VaZupSv3A01Ko1r0K',NULL,NULL,NULL,NULL,NULL,NULL),(10,0,'test02','Trần Thị B','$2b$10$vQRU4mMyzTypXsHKM.ozquxiw0Nb3VDtLNabkQCS6G9EITbtGYmFy',NULL,NULL,NULL,NULL,NULL,NULL),(11,0,'testuser2','Lê Thị C','$2b$10$qxxTUYGRscf9J3jxbkBTf.8wl9iR2/SYmhTxusM5P8K.jQZDrjraS',NULL,NULL,NULL,NULL,NULL,NULL);
+INSERT INTO `users` VALUES (6,0,'admin','Quản trị viên','$2b$10$vyVtRcQzpqsLNg8/auCtwO4ZQYqhJyrcFznfWJKNR0GsIe7xy08Uq','',NULL,'','','18120123','',0,NULL),(7,1,'1130674984401221','Văn Đức',NULL,'duc@gmail.com',NULL,'0941123123','HCM','18120324','Duc',1,NULL),(8,0,'test','Nguyễn Văn A','$2b$10$y7RHRPhlV8GVXfwuORmKR.5m6HyZSiT7pW5eQzw1enoz6K.ccft62',NULL,NULL,NULL,NULL,NULL,NULL,0,NULL),(9,0,'usertest1','Nguyễn Văn Tèo','$2b$10$/Dol1FDu/lXcIgSsTzqGSuPAQIRJY72OPyY0VaZupSv3A01Ko1r0K',NULL,NULL,NULL,NULL,NULL,NULL,0,NULL),(10,0,'test02','Trần Thị B','$2b$10$vQRU4mMyzTypXsHKM.ozquxiw0Nb3VDtLNabkQCS6G9EITbtGYmFy',NULL,NULL,NULL,NULL,NULL,NULL,0,NULL),(11,0,'testuser2','Lê Thị C','$2b$10$qxxTUYGRscf9J3jxbkBTf.8wl9iR2/SYmhTxusM5P8K.jQZDrjraS',NULL,NULL,NULL,NULL,NULL,NULL,0,NULL),(12,0,'hellovanduc','Đức','$2b$10$WFSMbrBaG8/tQUdvbZun1uoFlfb2qfCKzQvBFAX99iPknbSv.r7Mq',NULL,NULL,NULL,NULL,NULL,NULL,0,NULL),(20,0,'testactivateuserbyemail','Nguyễn Văn A','$2b$10$6cMKj2HtLYKUWniZrFSHsuPKSKereeFF35QdvW7gBrb6fklvpBvOG','nguyenduc21022k@gmail.com',NULL,NULL,NULL,NULL,NULL,1,NULL);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -211,4 +213,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2021-12-18 15:43:26
+-- Dump completed on 2022-01-13  6:21:44
