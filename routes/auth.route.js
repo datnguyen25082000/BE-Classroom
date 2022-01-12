@@ -9,6 +9,12 @@ router.post("/register", authController.register);
 // Login
 router.post("/Login", authController.login);
 
+router.post("/activate-user", authController.activateUser)
+
+router.post("/forgot-password", authController.forgotPassword)
+
+router.post("/reset-password", authController.resetPassword)
+
 router.get(
   "/GetCurrentUser",
   passport.authenticate,
