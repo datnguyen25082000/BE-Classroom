@@ -19,25 +19,7 @@ module.exports = {
       email
     );
 
-    const defaultRes = {
-      result: 0,
-      message: displayMessageConstants.REGISTER_USER_FAILED,
-      content: {},
-    };
-
-    if (result.success) {
-      res.json({
-        ...defaultRes,
-        message: displayMessageConstants.REGISTER_USER_SUCCESSFULLY,
-      });
-    } else if (result.data === errorMessageConstants.USERNAME_ALREADY_EXISTS) {
-      res.status(200).json({
-        ...defaultRes,
-        message: displayMessageConstants.USERNAME_ALREADY_EXISTS,
-      });
-    } else {
-      res.status(200).json(defaultRes);
-    }
+    processResult(result, res)
   },
 
   async login(req, res) {
