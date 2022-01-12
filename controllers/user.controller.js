@@ -1,5 +1,6 @@
 const userService = require("../services/user.service");
 const API_SOURCE_URL = process.env.API_SOURCE_URL;
+const processResult = require('../utils/api-helper').processResult
 
 module.exports = {
   async getUserInfo(req, res, next) {
@@ -76,4 +77,15 @@ module.exports = {
       content: user,
     });
   },
+
+  async changePassword(req, res, next) {
+    const { currentPassword, newPassword } = req.body
+    const result = await userService.changePassword(
+      currentPassword,
+      newPassword,
+      req.user.user_username
+    );
+
+    processResult(result, res)
+  }
 };

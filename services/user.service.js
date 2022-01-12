@@ -32,15 +32,6 @@ module.exports = {
       };
     }
 
-    if (
-      (user.user_is_active = userActiveStatusConstant.NOT_ACTIVATED_BY_USER)
-    ) {
-      return {
-        success: false,
-        data: errorMessageConstants.ACCOUNT_IS_NOT_ACTIVATED_BY_USER,
-      };
-    }
-
     switch (user.user_is_active) {
       case userActiveStatusConstant.NOT_ACTIVATED_BY_USER:
         return {
@@ -146,6 +137,8 @@ module.exports = {
       };
     }
 
+    user.user_is_active = userActiveStatusConstant.ACTIVE;
+
     await userModel.patch(user);
 
     return {
@@ -222,6 +215,7 @@ module.exports = {
     const { email } = jwt.verify(code, process.env.JWT_FORGOT_PASSWORD);
 
     const user = await userModel.findByEmail(email);
+
     if (!user) {
       return {
         success: false,
@@ -233,14 +227,39 @@ module.exports = {
     const hashPassword = await bcrypt.hash(newPassword, 10);
 
     user.user_password = hashPassword;
-    await userModel.patch(user)
+    await userModel.patch(user);
 
     return {
       success: true,
       data: {
         username: user.user_username,
-        password: newPassword
-      }
+        password: newPassword,
+      },
+    };
+  },
+
+  async changePassword(currentPassword, newPassword, currentUser) {
+    const user = await userModel.findByUsername(currentUser);
+
+    const isCorrectPassword = await bcrypt.compare(
+      currentPassword,
+      user.user_password
+    );
+    if (!isCorrectPassword) {
+      return {
+        success: false,
+        data: errorMessageConstants.INCORRECT_PASSWORD,
+      };
+    }
+
+    const newHashPassword = await bcrypt.hash(newPassword, 10);
+    user.user_password = newHashPassword;
+
+    await userModel.patch(user)
+
+    return {
+      success: true,
+      data: user
     }
   },
 };

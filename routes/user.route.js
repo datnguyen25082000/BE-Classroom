@@ -27,6 +27,8 @@ router.get("/GetUserInfo", userController.getUserInfo);
 
 router.post("/UpdateInfo", userController.updateInfo);
 
+router.post("/change-password", userController.changePassword);
+
 router.post(
   "/UpdateAvatar",
   upload.single("image"),
