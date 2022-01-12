@@ -95,7 +95,7 @@ module.exports = {
   },
 
   async resetPassword(req, res, next) {
-    const result = await userService.resetPassword(req.body.code);
+    const result = await userService.resetPassword(req.body.code, req.body.newPassword);
     processResult(result, res);
   },
 };

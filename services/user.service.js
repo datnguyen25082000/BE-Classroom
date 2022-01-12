@@ -198,8 +198,8 @@ module.exports = {
                 <h1>NTD MY CLASSROOM</h1>
                 <h3>Chào mừng bạn đến với hệ thống lớp học myclassroom</h3>
                 <p>Bạn đã chọn tính năng Quên mật khẩu.</p>
-                <p>Để tạo mật khẩu mới, vui lòng truy cập vào đường dẫn bên dưới</p>
-                ${process.env.APP_URL}account/${code}
+                <p>Vui lòng sử dụng mã sau để tạo mật khẩu mới:</p>
+                ${code}
             </div>
         </div>
       `;
@@ -211,7 +211,7 @@ module.exports = {
     return { success: true };
   },
 
-  async resetPassword(code) {
+  async resetPassword(code, newPassword) {
     const { email } = jwt.verify(code, process.env.JWT_FORGOT_PASSWORD);
 
     const user = await userModel.findByEmail(email);
@@ -223,7 +223,6 @@ module.exports = {
       };
     }
 
-    const newPassword = Math.random().toString(36).slice(-8);
     const hashPassword = await bcrypt.hash(newPassword, 10);
 
     user.user_password = hashPassword;
@@ -232,8 +231,7 @@ module.exports = {
     return {
       success: true,
       data: {
-        username: user.user_username,
-        password: newPassword,
+        username: user.user_username
       },
     };
   },
