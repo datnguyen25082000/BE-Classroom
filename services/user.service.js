@@ -186,12 +186,10 @@ module.exports = {
       };
     }
 
-    const code = jwt.sign(
-      {
-        email,
-      },
-      process.env.JWT_FORGOT_PASSWORD
-    );
+    const otp = Math.random().toString().slice(-6)
+    user.user_otp = otp;
+    await userModel.patch(user)
+
     const content = `
         <div style="padding: 10px">
             <div>
@@ -199,7 +197,7 @@ module.exports = {
                 <h3>Chào mừng bạn đến với hệ thống lớp học myclassroom</h3>
                 <p>Bạn đã chọn tính năng Quên mật khẩu.</p>
                 <p>Vui lòng sử dụng mã sau để tạo mật khẩu mới:</p>
-                ${code}
+                ${otp}
             </div>
         </div>
       `;
@@ -211,9 +209,7 @@ module.exports = {
     return { success: true };
   },
 
-  async resetPassword(code, newPassword) {
-    const { email } = jwt.verify(code, process.env.JWT_FORGOT_PASSWORD);
-
+  async resetPassword(email, otp, newPassword) {
     const user = await userModel.findByEmail(email);
 
     if (!user) {
@@ -223,9 +219,17 @@ module.exports = {
       };
     }
 
+    if (!user.user_otp || user.user_otp !== otp) {
+      return {
+        success: false,
+        data: errorMessageConstants.INVALID_OTP
+      }
+    }
+
     const hashPassword = await bcrypt.hash(newPassword, 10);
 
     user.user_password = hashPassword;
+    user.user_otp = null
     await userModel.patch(user);
 
     return {

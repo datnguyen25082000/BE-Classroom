@@ -19,7 +19,7 @@ module.exports = {
       email
     );
 
-    processResult(result, res)
+    processResult(result, res);
   },
 
   async login(req, res) {
@@ -95,7 +95,11 @@ module.exports = {
   },
 
   async resetPassword(req, res, next) {
-    const result = await userService.resetPassword(req.body.code, req.body.newPassword);
+    const result = await userService.resetPassword(
+      req.body.email,
+      req.body.otp,
+      req.body.newPassword
+    );
     processResult(result, res);
   },
 };
