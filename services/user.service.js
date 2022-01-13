@@ -159,11 +159,28 @@ module.exports = {
     return user;
   },
 
-  async updateInfo(username, entity) {
-    const user = await userModel.findByUsername(username);
+  async updateInfo(userId, data) {
+    const user = await userModel.findByUserId(userId);
 
     if (user) {
-      await userModel.patch({ ...entity, user_username: username });
+      const {
+        user_displayname,
+        user_address,
+        user_email,
+        user_studentid,
+        user_phone,
+        user_nameinroom,
+      } = data;
+
+      await userModel.patch({
+        ...user,
+        user_displayname,
+        user_address,
+        user_email,
+        user_studentid,
+        user_phone,
+        user_nameinroom,
+      });
       return true;
     }
 
@@ -186,9 +203,9 @@ module.exports = {
       };
     }
 
-    const otp = Math.random().toString().slice(-6)
+    const otp = Math.random().toString().slice(-6);
     user.user_otp = otp;
-    await userModel.patch(user)
+    await userModel.patch(user);
 
     const content = `
         <div style="padding: 10px">
@@ -222,20 +239,20 @@ module.exports = {
     if (!user.user_otp || user.user_otp !== otp) {
       return {
         success: false,
-        data: errorMessageConstants.INVALID_OTP
-      }
+        data: errorMessageConstants.INVALID_OTP,
+      };
     }
 
     const hashPassword = await bcrypt.hash(newPassword, 10);
 
     user.user_password = hashPassword;
-    user.user_otp = null
+    user.user_otp = null;
     await userModel.patch(user);
 
     return {
       success: true,
       data: {
-        username: user.user_username
+        username: user.user_username,
       },
     };
   },
@@ -257,11 +274,11 @@ module.exports = {
     const newHashPassword = await bcrypt.hash(newPassword, 10);
     user.user_password = newHashPassword;
 
-    await userModel.patch(user)
+    await userModel.patch(user);
 
     return {
       success: true,
-      data: user
-    }
+      data: user,
+    };
   },
 };

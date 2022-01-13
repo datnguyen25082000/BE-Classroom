@@ -132,9 +132,9 @@ module.exports = {
       };
     }
 
-    const assignmentCategories = await assignmentCategoryModel.allByCourse(
-      course_id
-    );
+    const assignmentCategories = (
+      await assignmentCategoryModel.allByCourse(course_id)
+    ).filter((x) => x.isFinalized);
 
     const scores = [];
     for (const assignmentCategory of assignmentCategories) {
@@ -142,7 +142,6 @@ module.exports = {
         student.id,
         assignmentCategory.id
       );
-      console.log("score: ", score);
 
       if (score && score.length) scores.push(score[0]);
     }

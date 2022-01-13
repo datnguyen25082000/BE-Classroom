@@ -38,9 +38,9 @@ module.exports = {
       user_nameinroom,
     } = req.body);
 
-    const { user_username } = req.user;
+    const { user_id } = req.user;
 
-    const result = await userService.updateInfo(user_username, data);
+    const result = await userService.updateInfo(user_id, data);
 
     res.json({
       result: 0,
