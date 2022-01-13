@@ -106,7 +106,7 @@ module.exports = {
                 <h3>Chào mừng bạn đến với hệ thống lớp học myclassroom</h3>
                 <p>Bạn đã đăng kí tài khoản thành công.</p>
                 <p>Để kích hoạt tài khoản, vui lòng truy cập vào đường dẫn bên dưới</p>
-                ${process.env.APP_URL}account/${code}
+                ${process.env.APP_URL}account-active?code=${code}
             </div>
         </div>
       `;
