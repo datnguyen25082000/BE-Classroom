@@ -11,4 +11,13 @@ module.exports = {
 
     processResult(result, res);
   },
+
+  async getAllScoreReviewByCourse(req, res, next) {
+    const result = await scoreReviewService.getAllReviewRequest(
+      req.query.course_id,
+      req.user.user_id
+    );
+
+    processResult(result, res);
+  },
 };

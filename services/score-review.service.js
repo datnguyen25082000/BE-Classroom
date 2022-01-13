@@ -3,10 +3,12 @@ const scoreModel = require("../model/score.model");
 const assignmentCategoryModel = require("../model/assignment-category.model");
 const notificationModel = require("../model/notification.model");
 const commonModel = require("../model/common.model");
+const courseJoinModel = require("../model/course-join.model");
 
 const error = require("../constants/error-message.constants");
 
 const helper = require("../utils/service-helper");
+const userRoleConstant = require("../constants/user-role.constant");
 const fail = helper.getFailResponse;
 const success = helper.getSuccessResponse;
 
@@ -57,4 +59,23 @@ module.exports = {
 
     return success(score_review);
   },
+
+  async getAllReviewRequest(course_id, current_user_id) {
+    const courseJoin = await courseJoinModel.single(current_user_id, course_id);
+    if (!courseJoin || !isTeacherOrHost(courseJoin.user_role)) {
+      return fail(error.NOT_HAVE_PERMISSION);
+    }
+
+    const scoreReviews = await commonModel.getAllScoreReviewByCourseIdAndUserId(
+      course_id,
+      current_user_id
+    );
+    return success(scoreReviews);
+  },
+};
+
+const isTeacherOrHost = (userRole) => {
+  return (
+    userRole === userRoleConstant.HOST || userRole === userRoleConstant.TEACHER
+  );
 };
