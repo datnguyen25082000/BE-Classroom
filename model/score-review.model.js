@@ -14,4 +14,12 @@ module.exports = {
 
     return results.length ? results[0] : null;
   },
+
+  async getById(id) {
+    const results = await db.load(
+      `select * from ${TBL_SCORE_REVIEW} where id = '${id}'`
+    );
+
+    return results.length ? results[0] : null;
+  }
 };
