@@ -70,4 +70,20 @@ module.exports = {
 
     return rows.length > 0 ? rows : null;
   },
+
+  async getAllTeachersOfCourseByScoreReviewId(scoreReviewId) {
+    const rows = await db.load(
+      `select users.user_id
+        from users 
+        join coursejoin on users.user_id = coursejoin.user_id
+        join courses on courses.course_id = coursejoin.course_id
+        join assignment_category on assignment_category.course_id = courses.course_id
+        join score on score.assignment_category_id = assignment_category.id
+        join score_review on score_review.score_id = score.id
+        where score_review.id = ${scoreReviewId} 
+        and (coursejoin.user_role = ${userRoleConstant.HOST} or coursejoin.user_role = ${userRoleConstant.TEACHER})`
+    );
+
+    return rows.length > 0 ? rows : null
+  }
 };

@@ -20,4 +20,14 @@ module.exports = {
 
     processResult(result, res);
   },
+
+  async finalizeScoreReview(req, res, next) {
+    const result = await scoreReviewService.finalReview(
+      req.body.scoreReviewId,
+      req.body.updatedPoint,
+      req.user
+    );
+
+    processResult(result, res)
+  },
 };

@@ -39,4 +39,9 @@ module.exports = {
 
     return results.length ? results[0] : null;
   },
+
+  patch(entity) {
+    const condition = { id: entity.id };
+    return db.patch(entity, condition, TBL_SCORE);
+  },
 };

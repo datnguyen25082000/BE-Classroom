@@ -9,6 +9,7 @@ const error = require("../constants/error-message.constants");
 
 const helper = require("../utils/service-helper");
 const userRoleConstant = require("../constants/user-role.constant");
+const userModel = require("../model/user.model");
 const fail = helper.getFailResponse;
 const success = helper.getSuccessResponse;
 
@@ -71,6 +72,41 @@ module.exports = {
       current_user_id
     );
     return success(scoreReviews);
+  },
+
+  async finalReview(scoreReviewId, updatedPoint, current_user) {
+    const teachers = await commonModel.getAllTeachersOfCourseByScoreReviewId(
+      scoreReviewId
+    );
+    if (
+      !teachers ||
+      !teachers.find((x) => x.user_id === current_user.user_id)
+    ) {
+      return fail(error.NOT_HAVE_PERMISSION);
+    }
+
+    const scoreReview = await scoreReviewModel.getById(scoreReviewId);
+    if (scoreReview.isFinalized) {
+      return fail(error.SCORE_REVIEW_ALREADY_FINALIZED);
+    }
+
+    const score = await scoreModel.getById(scoreReview.score_id);
+
+    await scoreModel.patch({ ...score, point: updatedPoint });
+    await scoreReviewModel.patch({ ...scoreReview, isFinalized: true });
+
+    const rows = (await commonModel.getStudentIdByScoreReviewId(
+      scoreReviewId
+    ))
+    const student = await userModel.findByStudentId(rows[0].student_id);
+    if (student) {
+      await notificationModel.add(
+        student.user_id,
+        `Giáo viên ${current_user.user_displayname} đã hoàn tất yêu cầu sửa điểm của bạn`
+      );
+    }
+
+    return success({ ...scoreReview, isFinalized: true, updatedPoint });
   },
 };
 
