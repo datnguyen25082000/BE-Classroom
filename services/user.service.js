@@ -15,10 +15,7 @@ module.exports = {
     const user = await userModel.findByUsername(username, userType);
 
     if (!user) {
-      return {
-        success: false,
-        data: errorMessageConstants.USERNAME_NOT_EXIST,
-      };
+      return { error: errorMessageConstants.USERNAME_NOT_EXIST };
     }
 
     const isCorrectPassword = await bcrypt.compare(
@@ -26,10 +23,7 @@ module.exports = {
       user.user_password
     );
     if (!isCorrectPassword) {
-      return {
-        success: false,
-        data: errorMessageConstants.INCORRECT_PASSWORD,
-      };
+      return { error: errorMessageConstants.INCORRECT_PASSWORD };
     }
 
     switch (user.user_is_active) {
@@ -60,18 +54,12 @@ module.exports = {
     let user = await userModel.findByUsername(username, userType);
 
     if (user) {
-      return {
-        success: false,
-        data: errorMessageConstants.USERNAME_ALREADY_EXISTS,
-      };
+      return { error: errorMessageConstants.USERNAME_ALREADY_EXISTS };
     }
 
     user = await userModel.findByEmail(email);
     if (user) {
-      return {
-        success: false,
-        data: errorMessageConstants.EMAIL_ALREADY_EXISTS,
-      };
+      return { error: errorMessageConstants.EMAIL_ALREADY_EXISTS };
     }
 
     if (userType === userTypeConstant.NORMAL_USER) {
@@ -124,17 +112,11 @@ module.exports = {
     const user = await userModel.findByEmail(email);
 
     if (!user) {
-      return {
-        success: false,
-        data: errorMessageConstants.USER_WITH_THIS_EMAIL_NOT_EXISTS,
-      };
+      return { error: errorMessageConstants.USER_WITH_THIS_EMAIL_NOT_EXISTS };
     }
 
     if (user.user_is_active === userActiveStatusConstant.ACTIVE) {
-      return {
-        success: false,
-        data: errorMessageConstants.USER_ALREADY_ACTIVATED,
-      };
+      return { error: errorMessageConstants.USER_ALREADY_ACTIVATED };
     }
 
     user.user_is_active = userActiveStatusConstant.ACTIVE;
@@ -197,10 +179,7 @@ module.exports = {
     const user = await userModel.findByEmail(email);
 
     if (!user) {
-      return {
-        success: false,
-        data: errorMessageConstants.USER_WITH_THIS_EMAIL_NOT_EXISTS,
-      };
+      return { error: errorMessageConstants.USER_WITH_THIS_EMAIL_NOT_EXISTS };
     }
 
     const otp = Math.random().toString().slice(-6);
@@ -230,17 +209,11 @@ module.exports = {
     const user = await userModel.findByEmail(email);
 
     if (!user) {
-      return {
-        success: false,
-        data: errorMessageConstants.USER_WITH_THIS_EMAIL_NOT_EXISTS,
-      };
+      return { error: errorMessageConstants.USER_WITH_THIS_EMAIL_NOT_EXISTS };
     }
 
     if (!user.user_otp || user.user_otp !== otp) {
-      return {
-        success: false,
-        data: errorMessageConstants.INVALID_OTP,
-      };
+      return { error: errorMessageConstants.INVALID_OTP };
     }
 
     const hashPassword = await bcrypt.hash(newPassword, 10);
@@ -265,10 +238,7 @@ module.exports = {
       user.user_password
     );
     if (!isCorrectPassword) {
-      return {
-        success: false,
-        data: errorMessageConstants.INCORRECT_PASSWORD,
-      };
+      return { error: errorMessageConstants.INCORRECT_PASSWORD };
     }
 
     const newHashPassword = await bcrypt.hash(newPassword, 10);
@@ -277,7 +247,6 @@ module.exports = {
     await userModel.patch(user);
 
     return {
-      success: true,
       data: user,
     };
   },

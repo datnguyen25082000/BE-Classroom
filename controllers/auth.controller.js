@@ -33,7 +33,7 @@ module.exports = {
 
     const result = await userService.authenticateUser(username, password);
 
-    if (result.success) {
+    if (!result.error) {
       var payload = { username };
       var token = jwt.sign(payload, jwtOptions.secretOrKey);
       res.json({
@@ -46,7 +46,7 @@ module.exports = {
     } else {
       res.json({
         ...defaultRes,
-        message: result.data,
+        message: result.error,
       });
     }
   },
@@ -78,8 +78,6 @@ module.exports = {
       token,
       process.env.JWT_ACCOUNT_ACTIVATION
     );
-
-    console.log("email", email);
 
     res.redirect("https://w3schools.com");
   },

@@ -27,7 +27,6 @@ module.exports = {
 
     const courseStudents = await courseStudentsModel.getAllByCourse(course_id);
     return {
-      error: null,
       data: courseStudents,
     };
   },
@@ -81,7 +80,6 @@ module.exports = {
     const courseStudents = await courseStudentsModel.getAllByCourse(course_id);
 
     return {
-      error: null,
       data: courseStudents,
     };
   },

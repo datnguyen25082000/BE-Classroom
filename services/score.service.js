@@ -69,7 +69,6 @@ module.exports = {
     }
 
     return {
-      error: null,
       data: savedScores,
     };
   },
@@ -109,7 +108,6 @@ module.exports = {
     }
 
     return {
-      error: null,
       data: scores,
     };
   },
@@ -147,7 +145,6 @@ module.exports = {
     }
 
     return {
-      error: null,
       data: {
         score: scores,
         student: student,

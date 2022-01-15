@@ -31,4 +31,14 @@ module.exports = function (app) {
     passport.authenticate,
     require("../routes/score.route")
   );
+  app.use(
+    "/api/score-review",
+    passport.authenticate,
+    require("../routes/score-review.route")
+  );
+  app.use(
+    "/api/score-review-comment",
+    passport.authenticate,
+    require("../routes/score-review-comment.route")
+  );
 };

@@ -4,6 +4,9 @@ const assignmentCategoryModel = require("../model/assignment-category.model");
 const errorMessageConstants = require("../constants/error-message.constants");
 const courseJoinModel = require("../model/course-join.model");
 const userRoleConstant = require("../constants/user-role.constant");
+const notificationModel = require("../model/notification.model");
+const courseStudentModel = require("../model/course-students.model");
+const userModel = require("../model/user.model");
 
 module.exports = {
   async getAllByCourse(course_id, current_user_id) {
@@ -186,10 +189,23 @@ module.exports = {
       };
     }
 
-    const temp = assignmentCategory.isFinalized;
-    assignmentCategory.isFinalized = !temp;
+    assignmentCategory.isFinalized = !assignmentCategory.isFinalized;
 
     assignmentCategoryModel.patch(assignmentCategory);
+
+    if (assignmentCategory.isFinalized) {
+      const notificationContent = `Cột điểm ${assignmentCategory.name} của lớp có mã số ${assignmentCategory.course_id} đã được công bố`;
+
+      const students = await courseStudentModel.getAllByCourse(
+        assignmentCategory.course_id
+      );
+      for (const student of students) {
+        const user = await userModel.findByStudentId(student.student_id);
+        if (user) {
+          await notificationModel.add(user.user_id, notificationContent);
+        }
+      }
+    }
 
     return { error: null, data: assignmentCategory };
   },
