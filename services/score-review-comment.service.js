@@ -5,56 +5,64 @@ const notificationModel = require("../model/notification.model");
 const commonModel = require("../model/common.model");
 const courseJoinModel = require("../model/course-join.model");
 const scoreReviewCommentModel = require("../model/score-review-comment.model");
+const userModel = require("../model/user.model");
 
 const error = require("../constants/error-message.constants");
 
 const helper = require("../utils/service-helper");
-const userRoleConstant = require("../constants/user-role.constant");
 const fail = helper.getFailResponse;
 const success = helper.getSuccessResponse;
 
 module.exports = {
-  async addComment(
-    score_review_id,
-    content,
-    current_user_id,
-    current_user_student_id
-  ) {
+  async addComment(score_review_id, content, current_user) {
     const scoreReview = await scoreReviewModel.getById(score_review_id);
     if (!scoreReview) {
       return fail(error.SCORE_REVIEW_ID_NOT_EXIST);
     }
 
-    const havePermission = await isStudentCreateReviewOrTeachersOfCourse(
-      score_review_id,
-      current_user_id,
-      current_user_student_id,
-      scoreReview.score_id
-    );
+    const roleConstant = {
+      teacher: "teacher",
+      student: "student",
+    };
+    let role;
 
-    if (!havePermission) {
+    if (
+      await isStudentCreateReview(score_review_id, current_user.user_studentid)
+    ) {
+      role = roleConstant.student;
+    } else if (
+      await isTeacherOfCourse(scoreReview.score_id, current_user.user_id)
+    ) {
+      role = roleConstant.teacher;
+    } else {
       return fail(error.NOT_HAVE_PERMISSION);
     }
 
     const comment = {
       score_review_id,
-      created_by: current_user_id,
+      created_by: current_user.user_id,
       created_at: new Date(),
       content,
     };
 
     const result = await scoreReviewCommentModel.add(comment);
 
+    if (role === roleConstant.teacher) {
+      const result = await commonModel.getStudentIdByScoreReviewId(
+        score_review_id
+      );
+      const student = await userModel.findByStudentId(result[0].student_id);
+      await notificationModel.add(
+        student.user_id,
+        `Giáo viên ${current_user.user_displayname} đã bình luận về yêu cầu sửa điểm của bạn.`
+      );
+    }
+
     return success({ ...comment, id: result.insertId });
   },
 };
 
-const isStudentCreateReviewOrTeachersOfCourse = async (
-  scoreReviewId,
-  currentUserId,
-  currentUserStudentId,
-  scoreId
-) => {
+const isStudentCreateReview = async (scoreReviewId, currentUserStudentId) => {
   const studentId = await commonModel.getStudentIdByScoreReviewId(
     scoreReviewId
   );
@@ -62,6 +70,10 @@ const isStudentCreateReviewOrTeachersOfCourse = async (
     return true;
   }
 
+  return false;
+};
+
+const isTeacherOfCourse = async (scoreId, currentUserId) => {
   const teachers = await commonModel.findAllTeacherByScoreId(scoreId);
   if (
     teachers &&

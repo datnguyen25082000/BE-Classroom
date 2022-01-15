@@ -6,8 +6,7 @@ module.exports = {
     const result = await scoreReviewCommentService.addComment(
       req.body.score_review_id,
       req.body.content,
-      req.user.user_id,
-      req.user.user_studentid
+      req.user
     );
 
     processResult(result, res);
