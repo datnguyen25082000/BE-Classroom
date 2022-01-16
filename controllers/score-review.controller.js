@@ -26,6 +26,14 @@ module.exports = {
     processResult(result, res);
   },
 
+  async getByAssignment(req, res, next) {
+    const result = await scoreReviewService.getByAssignment(
+      req.user,
+      req.query.assignment_category_id
+    );
+    processResult(result, res);
+  },
+
   async finalizeScoreReview(req, res, next) {
     const result = await scoreReviewService.finalReview(
       req.body.scoreReviewId,

@@ -8,6 +8,7 @@ router.get(
   scoreReviewController.getAllScoreReviewByCourse
 );
 router.get("/get-all-by-user", scoreReviewController.getAllByUser);
+router.get("/get-by-assignment", scoreReviewController.getByAssignment);
 router.post("/finalize", scoreReviewController.finalizeScoreReview);
 
 

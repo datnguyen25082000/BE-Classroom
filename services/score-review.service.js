@@ -81,6 +81,14 @@ module.exports = {
     return success(requests);
   },
 
+  async getByAssignment(current_user, assignment_category_id) {
+    const request = await scoreReviewModel.getByStudentIdAndAssignment(
+      current_user.user_studentid,
+      assignment_category_id
+    );
+    return success(request);
+  },
+
   async finalReview(scoreReviewId, updatedPoint, current_user) {
     const teachers = await commonModel.getAllTeachersOfCourseByScoreReviewId(
       scoreReviewId

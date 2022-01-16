@@ -33,6 +33,18 @@ module.exports = {
     return results;
   },
 
+  async getByStudentIdAndAssignment(studentId, assignment_category_id) {
+    const results = await db.load(`select score_review.*
+            from score_review 
+            join score on score.id = score_review.score_id
+            join course_students on score.course_student_id = course_students.id
+            join users on users.user_studentid = course_students.student_id
+            join assignment_category on score.assignment_category_id = assignment_category.id
+            where users.user_studentid = ${studentId}
+            and assignment_category_id = '${assignment_category_id}'`);
+    return results.length > 0 ? results[0] : null;
+  },
+
   patch(entity) {
     const condition = { id: entity.id };
     return db.patch(entity, condition, TBL_SCORE_REVIEW);
