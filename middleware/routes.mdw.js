@@ -41,4 +41,9 @@ module.exports = function (app) {
     passport.authenticate,
     require("../routes/score-review-comment.route")
   );
+  app.use(
+    "/api/notification",
+    passport.authenticate,
+    require("../routes/notification.route")
+  );
 };
