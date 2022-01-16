@@ -7,9 +7,7 @@ router.get(
   "/get-all-by-course",
   scoreReviewController.getAllScoreReviewByCourse
 );
-router.post(
-  "/finalize",
-  scoreReviewController.finalizeScoreReview
-);
+router.get("/get-all-by-user", scoreReviewController.getAllByUser);
+router.post("/finalize", scoreReviewController.finalizeScoreReview);
 
 module.exports = router;

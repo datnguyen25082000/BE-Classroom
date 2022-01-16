@@ -23,6 +23,16 @@ module.exports = {
     return results.length ? results[0] : null;
   },
 
+  async getByStudentId(studentId) {
+    const results = await db.load(`select score_review.*
+            from score_review 
+            join score on score.id = score_review.score_id
+            join course_students on score.course_student_id = course_students.id
+            join users on users.user_studentid = course_students.student_id
+            where users.user_studentid = ${studentId}`);
+    return results;
+  },
+
   patch(entity) {
     const condition = { id: entity.id };
     return db.patch(entity, condition, TBL_SCORE_REVIEW);

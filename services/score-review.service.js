@@ -74,6 +74,13 @@ module.exports = {
     return success(scoreReviews);
   },
 
+  async getAllRequestByUser(current_user) {
+    const requests = await scoreReviewModel.getByStudentId(
+      current_user.user_studentid
+    );
+    return success(requests);
+  },
+
   async finalReview(scoreReviewId, updatedPoint, current_user) {
     const teachers = await commonModel.getAllTeachersOfCourseByScoreReviewId(
       scoreReviewId
@@ -95,9 +102,7 @@ module.exports = {
     await scoreModel.patch({ ...score, point: updatedPoint });
     await scoreReviewModel.patch({ ...scoreReview, isFinalized: true });
 
-    const rows = (await commonModel.getStudentIdByScoreReviewId(
-      scoreReviewId
-    ))
+    const rows = await commonModel.getStudentIdByScoreReviewId(scoreReviewId);
     const student = await userModel.findByStudentId(rows[0].student_id);
     if (student) {
       await notificationModel.add(

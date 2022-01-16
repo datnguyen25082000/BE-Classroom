@@ -21,6 +21,11 @@ module.exports = {
     processResult(result, res);
   },
 
+  async getAllByUser(req, res, next) {
+    const result = await scoreReviewService.getAllRequestByUser(req.user);
+    processResult(result, res);
+  },
+
   async finalizeScoreReview(req, res, next) {
     const result = await scoreReviewService.finalReview(
       req.body.scoreReviewId,
@@ -28,6 +33,6 @@ module.exports = {
       req.user
     );
 
-    processResult(result, res)
+    processResult(result, res);
   },
 };
