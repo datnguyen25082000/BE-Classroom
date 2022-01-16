@@ -3,8 +3,9 @@ const FacebookTokenStrategy = require("passport-facebook-token");
 const JWTStrategy = require("passport-jwt").Strategy;
 const ExtractJWT = require("passport-jwt").ExtractJwt;
 const userService = require("../services/user.service");
-const adminService = require('../services/admin.service')
+const adminService = require("../services/admin.service");
 const userTypeConstant = require("../constants/user-type.constant");
+const userStatus = require("../constants/user-active-status.constant");
 
 passport.use(
   "jwt-user",
@@ -16,7 +17,7 @@ passport.use(
     async (jwt_payload, done) => {
       const userName = jwt_payload.username;
       const user = await userService.findUserByUsername(userName);
-      if (user) {
+      if (user && user.user_is_active === userStatus.ACTIVE) {
         done(null, user);
       } else {
         done(null, false);

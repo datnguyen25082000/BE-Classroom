@@ -29,4 +29,9 @@ module.exports = {
     );
     processResult(result, res);
   },
+
+  async lockUser(req, res, next) {
+    const result = await adminService.lockUser(req.body.user_id);
+    processResult(result, res);
+  },
 };

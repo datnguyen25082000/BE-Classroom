@@ -3,6 +3,7 @@ const errorMessageConstants = require("../constants/error-message.constants");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
 const adminModel = require("../model/admin.model");
+const userStatus = require("../constants/user-active-status.constant");
 
 const helper = require("../utils/service-helper");
 const success = helper.getSuccessResponse;
@@ -66,6 +67,17 @@ module.exports = {
     }
 
     user.user_studentid = new_student_id;
+    await userModel.patch(user);
+    return success(user);
+  },
+
+  async lockUser(user_id) {
+    const user = await userModel.findByUserId(user_id);
+    if (!user) {
+      return fail(errorMessageConstants.USER_ID_NOT_EXIST);
+    }
+
+    user.user_is_active = userStatus.BLOCKED_BY_ADMIN;
     await userModel.patch(user);
     return success(user);
   },
