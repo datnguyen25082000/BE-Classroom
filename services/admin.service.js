@@ -1,4 +1,5 @@
 const userModel = require("../model/user.model");
+const courseModel = require("../model/course.model");
 const errorMessageConstants = require("../constants/error-message.constants");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
@@ -80,5 +81,10 @@ module.exports = {
     user.user_is_active = userStatus.BLOCKED_BY_ADMIN;
     await userModel.patch(user);
     return success(user);
+  },
+
+  async getAllCourses() {
+    const courses = await courseModel.all();
+    return success(courses);
   },
 };

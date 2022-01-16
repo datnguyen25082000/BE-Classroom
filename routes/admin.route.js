@@ -15,5 +15,6 @@ router.post("/add", isSuperAdmin, adminController.add);
 router.get("/all-user", adminController.getAllUser);
 router.post("/update-student-id", adminController.updateStudentId);
 router.post("/lock-user", adminController.lockUser);
+router.get("/all-courses", adminController.getAllCourses);
 
 module.exports = router;

@@ -34,4 +34,9 @@ module.exports = {
     const result = await adminService.lockUser(req.body.user_id);
     processResult(result, res);
   },
+
+  async getAllCourses(req, res, next) {
+    const result = await adminService.getAllCourses();
+    processResult(result, res);
+  },
 };
