@@ -149,7 +149,7 @@ CREATE TABLE `notification` (
   `user_id` int NOT NULL,
   `content` varchar(500) NOT NULL,
   `created_at` datetime NOT NULL,
-  `isReaded` tinyint(1) DEFAULT '0',
+  `isRead` tinyint(1) DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `user_id` (`user_id`),
   CONSTRAINT `notification_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `users` (`user_id`)
@@ -162,7 +162,7 @@ CREATE TABLE `notification` (
 
 LOCK TABLES `notification` WRITE;
 /*!40000 ALTER TABLE `notification` DISABLE KEYS */;
-INSERT INTO `notification` VALUES (4,6,'Sinh viên có mã số 18120324 đã tạo yêu cầu review cột điểm Giữa kì của khóa học Phát triển ứng dụng di động','2022-01-14 06:22:51',0),(5,20,'Giáo viên Quản trị viên đã bình luận về yêu cầu sửa điểm của bạn.','2022-01-15 07:03:12',0),(6,20,'Cột điểm Giữa kì của lớp có mã số 17 đã được công bố','2022-01-15 08:34:21',0),(7,20,'Giáo viên Quản trị viên đã bình luận về yêu cầu sửa điểm của bạn.','2022-01-16 06:18:45',0),(8,20,'Giáo viên Quản trị viên đã hoàn tất yêu cầu sửa điểm của bạn','2022-01-16 06:39:46',0);
+INSERT INTO `notification` VALUES (4,6,'Sinh viên có mã số 18120324 đã tạo yêu cầu review cột điểm Giữa kì của khóa học Phát triển ứng dụng di động','2022-01-14 06:22:51',1),(5,20,'Giáo viên Quản trị viên đã bình luận về yêu cầu sửa điểm của bạn.','2022-01-15 07:03:12',0),(6,20,'Cột điểm Giữa kì của lớp có mã số 17 đã được công bố','2022-01-15 08:34:21',0),(7,20,'Giáo viên Quản trị viên đã bình luận về yêu cầu sửa điểm của bạn.','2022-01-16 06:18:45',0),(8,20,'Giáo viên Quản trị viên đã hoàn tất yêu cầu sửa điểm của bạn','2022-01-16 06:39:46',0);
 /*!40000 ALTER TABLE `notification` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -302,4 +302,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-01-16  6:43:40
+-- Dump completed on 2022-01-16  8:22:19
