@@ -46,4 +46,9 @@ module.exports = function (app) {
     passport.authenticate,
     require("../routes/notification.route")
   );
+  app.use(
+    "/api/admin",
+    passport.authorize,
+    require("../routes/admin.route")
+  );
 };

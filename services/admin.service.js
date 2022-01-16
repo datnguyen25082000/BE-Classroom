@@ -9,7 +9,7 @@ const success = helper.getSuccessResponse;
 const fail = helper.getFailResponse;
 
 module.exports = {
-    async authenticate(username, password) {
+  async authenticate(username, password) {
     const admin = await adminModel.findByUsername(username);
 
     if (!admin) {
@@ -26,4 +26,14 @@ module.exports = {
 
     return success({ token });
   },
+
+  async findByUsername(username) {
+    const admin = await adminModel.findByUsername(username);
+    return admin;
+  },
+
+  async getAllAdmin() {
+    const admins = await adminModel.all();
+    return success(admins)
+  }
 };

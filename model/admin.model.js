@@ -15,4 +15,9 @@ module.exports = {
 
     return rows.length ? rows[0] : null;
   },
+  all() {
+    return db.load(
+      `select * from ${TBL_ADMIN} order by created_at`
+    );
+  },
 };
