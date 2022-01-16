@@ -1,3 +1,7 @@
+DROP DATABASE IF EXISTS `granding_system`;
+CREATE DATABASE granding_system;
+USE granding_system;
+
 -- MySQL dump 10.13  Distrib 8.0.27, for Win64 (x86_64)
 --
 -- Host: 127.0.0.1    Database: granding_system
@@ -16,12 +20,39 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
+-- Table structure for table `admin`
+--
+
+DROP TABLE IF EXISTS `admin`;
+/*!40101 SET @saved_cs_client     = @@character_set_client */;
+/*!50503 SET character_set_client = utf8mb4 */;
+CREATE TABLE `admin` (
+  `id` int NOT NULL AUTO_INCREMENT,
+  `username` varchar(30) NOT NULL,
+  `password` varchar(100) NOT NULL,
+  `super_admin` tinyint(1) DEFAULT '0',
+  `created_at` datetime DEFAULT CURRENT_TIMESTAMP,
+  `display_name` varchar(40) DEFAULT NULL,
+  `email` varchar(35) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `username` (`username`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+/*!40101 SET character_set_client = @saved_cs_client */;
+
+--
+-- Dumping data for table `admin`
+--
+
+LOCK TABLES `admin` WRITE;
+/*!40000 ALTER TABLE `admin` DISABLE KEYS */;
+INSERT INTO `admin` VALUES (3,'superadmin','$2b$10$JKpey3bBiH3MaPCGcpcN8u0PBYjuOYqh0sfSMr74ReUOTBY9cZBHO',1,'2022-01-16 12:01:14',NULL,NULL),(4,'admin1','$2b$10$JKpey3bBiH3MaPCGcpcN8u0PBYjuOYqh0sfSMr74ReUOTBY9cZBHO',0,'2022-01-16 12:01:25',NULL,NULL),(5,'admin2','$2b$10$649W7h5WtdMeXcKI.Ot/PuA00Zjy4vuN80y6wYrk43wwPB20AXg52',0,'2022-01-16 12:06:42',NULL,NULL),(6,'admin3','$2b$10$/eITLfBsnAo2BBrbAmjBQeyVbItSlCREm4/K9EXid/oVq1IXuEQ82',0,'2022-01-16 13:07:28',NULL,NULL),(7,'admin4','$2b$10$K0N0HKZU7LyE8Q4e2H3HeOk307P.6AHHqCwwj9t1M9eC7zX3M4Iz2',0,'2022-01-16 13:08:10','Nguyễn Văn A','nva@gmail.com');
+/*!40000 ALTER TABLE `admin` ENABLE KEYS */;
+UNLOCK TABLES;
+
+--
 -- Table structure for table `assignment_category`
 --
 
-DROP DATABASE IF EXISTS `granding_system`;
-CREATE DATABASE granding_system;
-USE granding_system;
 DROP TABLE IF EXISTS `assignment_category`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
@@ -243,7 +274,7 @@ CREATE TABLE `score_review_comment` (
   KEY `score_review_id` (`score_review_id`),
   CONSTRAINT `score_review_comment_ibfk_1` FOREIGN KEY (`created_by`) REFERENCES `users` (`user_id`),
   CONSTRAINT `score_review_comment_ibfk_2` FOREIGN KEY (`score_review_id`) REFERENCES `score_review` (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -252,7 +283,7 @@ CREATE TABLE `score_review_comment` (
 
 LOCK TABLES `score_review_comment` WRITE;
 /*!40000 ALTER TABLE `score_review_comment` DISABLE KEYS */;
-INSERT INTO `score_review_comment` VALUES (1,6,6,'2022-01-15 06:23:44','Bài này em làm đúng mà'),(2,6,6,'2022-01-15 06:23:57','Bài này em làm đúng mà'),(3,6,6,'2022-01-15 06:24:42','Bài này em làm đúng mà'),(4,6,6,'2022-01-15 06:25:05','Bài này em làm đúng mà'),(5,6,6,'2022-01-15 06:41:28','Bài này em làm đúng mà'),(6,6,6,'2022-01-15 06:41:31','Bài này em làm đúng mà'),(7,6,6,'2022-01-15 06:53:32','Bài này em làm đúng mà'),(8,6,6,'2022-01-15 06:53:54','Bài này em làm đúng mà'),(9,6,6,'2022-01-15 06:55:33','Bài này em làm đúng mà'),(10,6,6,'2022-01-15 06:57:45','Bài này em làm đúng mà'),(11,6,6,'2022-01-15 06:58:11','Bài này em làm đúng mà'),(12,6,6,'2022-01-15 06:59:38','Bài này em làm đúng mà'),(13,6,6,'2022-01-15 07:01:05','Bài này em làm đúng mà'),(14,6,6,'2022-01-15 07:01:31','Bài này em làm đúng mà'),(15,6,6,'2022-01-15 07:01:58','Bài này em làm đúng mà'),(16,6,6,'2022-01-15 07:02:35','Bài này em làm đúng mà'),(17,6,6,'2022-01-15 07:03:12','Bài này em làm đúng mà'),(18,6,6,'2022-01-16 06:18:45','Thầy xem sớm giúp em');
+INSERT INTO `score_review_comment` VALUES (1,6,6,'2022-01-15 06:23:44','Bài này em làm đúng mà'),(2,6,6,'2022-01-15 06:23:57','Bài này em làm đúng mà'),(3,6,6,'2022-01-15 06:24:42','Bài này em làm đúng mà'),(4,6,6,'2022-01-15 06:25:05','Bài này em làm đúng mà'),(5,6,6,'2022-01-15 06:41:28','Bài này em làm đúng mà'),(6,6,6,'2022-01-15 06:41:31','Bài này em làm đúng mà'),(7,6,6,'2022-01-15 06:53:32','Bài này em làm đúng mà'),(8,6,6,'2022-01-15 06:53:54','Bài này em làm đúng mà'),(9,6,6,'2022-01-15 06:55:33','Bài này em làm đúng mà'),(10,6,6,'2022-01-15 06:57:45','Bài này em làm đúng mà'),(11,6,6,'2022-01-15 06:58:11','Bài này em làm đúng mà'),(12,6,6,'2022-01-15 06:59:38','Bài này em làm đúng mà'),(13,6,6,'2022-01-15 07:01:05','Bài này em làm đúng mà'),(14,6,6,'2022-01-15 07:01:31','Bài này em làm đúng mà'),(15,6,6,'2022-01-15 07:01:58','Bài này em làm đúng mà'),(16,6,6,'2022-01-15 07:02:35','Bài này em làm đúng mà'),(17,6,6,'2022-01-15 07:03:12','Bài này em làm đúng mà'),(18,6,6,'2022-01-16 06:18:45','Thầy xem sớm giúp em'),(19,6,20,'2022-01-16 09:14:32','Thầy xem sớm giúp em'),(20,6,20,'2022-01-16 09:14:37','Thầy xem sớm giúp em');
 /*!40000 ALTER TABLE `score_review_comment` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -289,7 +320,7 @@ CREATE TABLE `users` (
 
 LOCK TABLES `users` WRITE;
 /*!40000 ALTER TABLE `users` DISABLE KEYS */;
-INSERT INTO `users` VALUES (6,0,'admin','Quản trị viên','$2b$10$vyVtRcQzpqsLNg8/auCtwO4ZQYqhJyrcFznfWJKNR0GsIe7xy08Uq','',NULL,'','','18120123','',1,NULL),(8,0,'test','Nguyễn Văn A','$2b$10$y7RHRPhlV8GVXfwuORmKR.5m6HyZSiT7pW5eQzw1enoz6K.ccft62',NULL,NULL,NULL,NULL,NULL,NULL,1,NULL),(9,0,'usertest1','Nguyễn Văn Tèo','$2b$10$/Dol1FDu/lXcIgSsTzqGSuPAQIRJY72OPyY0VaZupSv3A01Ko1r0K',NULL,NULL,NULL,NULL,NULL,NULL,1,NULL),(10,0,'test02','Trần Thị B','$2b$10$vQRU4mMyzTypXsHKM.ozquxiw0Nb3VDtLNabkQCS6G9EITbtGYmFy',NULL,NULL,NULL,NULL,NULL,NULL,1,NULL),(11,0,'testuser2','Lê Thị C','$2b$10$qxxTUYGRscf9J3jxbkBTf.8wl9iR2/SYmhTxusM5P8K.jQZDrjraS',NULL,NULL,NULL,NULL,NULL,NULL,1,NULL),(12,0,'hellovanduc','Đức','$2b$10$WFSMbrBaG8/tQUdvbZun1uoFlfb2qfCKzQvBFAX99iPknbSv.r7Mq',NULL,NULL,NULL,NULL,NULL,NULL,1,NULL),(20,0,'testactivateuserbyemail','Nguyễn Văn A','$2b$10$6cMKj2HtLYKUWniZrFSHsuPKSKereeFF35QdvW7gBrb6fklvpBvOG','nguyenduc21022k@gmail.com',NULL,'','','18120324','',1,NULL);
+INSERT INTO `users` VALUES (6,0,'admin','Quản trị viên','$2b$10$vyVtRcQzpqsLNg8/auCtwO4ZQYqhJyrcFznfWJKNR0GsIe7xy08Uq','',NULL,'','','18120123','',1,NULL),(8,0,'test','Nguyễn Văn A','$2b$10$y7RHRPhlV8GVXfwuORmKR.5m6HyZSiT7pW5eQzw1enoz6K.ccft62',NULL,NULL,NULL,NULL,NULL,NULL,1,NULL),(9,0,'usertest1','Nguyễn Văn Tèo','$2b$10$/Dol1FDu/lXcIgSsTzqGSuPAQIRJY72OPyY0VaZupSv3A01Ko1r0K',NULL,NULL,NULL,NULL,NULL,NULL,1,NULL),(10,0,'test02','Trần Thị B','$2b$10$vQRU4mMyzTypXsHKM.ozquxiw0Nb3VDtLNabkQCS6G9EITbtGYmFy',NULL,NULL,NULL,NULL,NULL,NULL,1,NULL),(11,0,'testuser2','Lê Thị C','$2b$10$qxxTUYGRscf9J3jxbkBTf.8wl9iR2/SYmhTxusM5P8K.jQZDrjraS',NULL,NULL,NULL,NULL,'',NULL,2,NULL),(12,0,'hellovanduc','Đức','$2b$10$WFSMbrBaG8/tQUdvbZun1uoFlfb2qfCKzQvBFAX99iPknbSv.r7Mq',NULL,NULL,NULL,NULL,NULL,NULL,1,NULL),(20,0,'testactivateuserbyemail','Nguyễn Văn A','$2b$10$6cMKj2HtLYKUWniZrFSHsuPKSKereeFF35QdvW7gBrb6fklvpBvOG','nguyenduc21022k@gmail.com',NULL,'','','18120324','',1,NULL);
 /*!40000 ALTER TABLE `users` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -302,4 +333,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2022-01-16  8:22:19
+-- Dump completed on 2022-01-16 14:21:21
