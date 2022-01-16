@@ -21,4 +21,12 @@ module.exports = {
     const result = await adminService.getAllUser();
     processResult(result, res);
   },
+
+  async updateStudentId(req, res, next) {
+    const result = await adminService.updateStudentId(
+      req.body.user_id,
+      req.body.new_student_id
+    );
+    processResult(result, res);
+  },
 };

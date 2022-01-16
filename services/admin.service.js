@@ -43,7 +43,6 @@ module.exports = {
       return fail(errorMessageConstants.USERNAME_ALREADY_EXISTS);
     }
 
-
     const hashPassword = await bcrypt.hash(password, 10);
     const admin = { username, display_name, email, password: hashPassword };
     const result = await adminModel.add(admin);
@@ -52,6 +51,22 @@ module.exports = {
 
   async getAllUser() {
     const users = await userModel.all();
-    return success(users)
-  }
+    return success(users);
+  },
+
+  async updateStudentId(user_id, new_student_id) {
+    const user = await userModel.findByUserId(user_id);
+    if (!user) {
+      return fail(errorMessageConstants.USER_ID_NOT_EXIST);
+    }
+
+    const existStudentId = await userModel.findByStudentId(new_student_id);
+    if (existStudentId) {
+      return fail(errorMessageConstants.DUPLICATE_STUDENT_ID);
+    }
+
+    user.user_studentid = new_student_id;
+    await userModel.patch(user);
+    return success(user);
+  },
 };
