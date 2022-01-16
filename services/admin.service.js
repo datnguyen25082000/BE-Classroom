@@ -34,6 +34,19 @@ module.exports = {
 
   async getAllAdmin() {
     const admins = await adminModel.all();
-    return success(admins)
-  }
+    return success(admins);
+  },
+
+  async add(username, password, display_name, email) {
+    const existAdmin = await adminModel.findByUsername(username);
+    if (existAdmin) {
+      return fail(errorMessageConstants.USERNAME_ALREADY_EXISTS);
+    }
+
+
+    const hashPassword = await bcrypt.hash(password, 10);
+    const admin = { username, display_name, email, password: hashPassword };
+    const result = await adminModel.add(admin);
+    return success({ ...admin, id: result.insertId });
+  },
 };

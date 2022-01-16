@@ -5,10 +5,12 @@ const adminController = require("../controllers/admin.controller");
 const isSuperAdmin = (req, res, next) => {
   if (req.account.super_admin) {
     next();
+  } else {
+    res.status(401).send("Unauthorized");
   }
-  res.status(401);
 };
 
 router.get("/get-all", isSuperAdmin, adminController.getAll);
+router.post("/add", isSuperAdmin, adminController.add);
 
 module.exports = router;

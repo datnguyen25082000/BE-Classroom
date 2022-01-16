@@ -3,8 +3,7 @@ const db = require("../utils/db");
 const TBL_ADMIN = "admin";
 
 module.exports = {
-  add(username, password) {
-    const entity = { username, password };
+  add(entity) {
     return db.add(entity, TBL_ADMIN);
   },
 
