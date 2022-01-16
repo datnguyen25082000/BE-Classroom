@@ -60,6 +60,36 @@ module.exports = {
 
     return success({ ...comment, id: result.insertId });
   },
+
+  async getByScoreReviewId(current_user, score_review_id) {
+    const scoreReview = await scoreReviewModel.getById(score_review_id);
+    if (!scoreReview) {
+      return fail(error.SCORE_REVIEW_ID_NOT_EXIST);
+    }
+
+    const roleConstant = {
+      teacher: "teacher",
+      student: "student",
+    };
+    let role;
+
+    if (
+      await isStudentCreateReview(score_review_id, current_user.user_studentid)
+    ) {
+      role = roleConstant.student;
+    } else if (
+      await isTeacherOfCourse(scoreReview.score_id, current_user.user_id)
+    ) {
+      role = roleConstant.teacher;
+    } else {
+      return fail(error.NOT_HAVE_PERMISSION);
+    }
+
+    const comments = await scoreReviewCommentModel.getByScoreReviewId(
+      score_review_id
+    );
+    return success(comments);
+  },
 };
 
 const isStudentCreateReview = async (scoreReviewId, currentUserStudentId) => {

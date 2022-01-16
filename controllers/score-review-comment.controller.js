@@ -11,4 +11,13 @@ module.exports = {
 
     processResult(result, res);
   },
+
+  async getByScoreReviewId(req, res, next) {
+    const result = await scoreReviewCommentService.getByScoreReviewId(
+      req.user,
+      req.query.scoreReviewId
+    );
+
+    processResult(result, res);
+  },
 };
