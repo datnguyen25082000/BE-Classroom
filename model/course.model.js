@@ -9,6 +9,10 @@ module.exports = {
     );
   },
 
+  all() {
+    return db.load(`select * from ${TBL_COURSES} order by course_createdate`);
+  },
+
   add(entity) {
     return db.add(entity, TBL_COURSES);
   },
