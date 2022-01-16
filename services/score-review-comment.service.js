@@ -93,9 +93,9 @@ module.exports = {
 };
 
 const isStudentCreateReview = async (scoreReviewId, currentUserStudentId) => {
-  const studentId = await commonModel.getStudentIdByScoreReviewId(
-    scoreReviewId
-  );
+  const rows = await commonModel.getStudentIdByScoreReviewId(scoreReviewId);
+  const studentId = rows[0].student_id;
+
   if (studentId === currentUserStudentId) {
     return true;
   }
