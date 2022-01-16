@@ -29,14 +29,10 @@ module.exports = {
     switch (user.user_is_active) {
       case userActiveStatusConstant.NOT_ACTIVATED_BY_USER:
         return {
-          success: false,
-          data: errorMessageConstants.ACCOUNT_IS_NOT_ACTIVATED_BY_USER,
+          error: errorMessageConstants.ACCOUNT_IS_NOT_ACTIVATED_BY_USER,
         };
       case userActiveStatusConstant.BLOCKED_BY_ADMIN:
-        return {
-          success: false,
-          data: errorMessageConstants.ACCOUNT_IS_BLOCKED_BY_ADMIN,
-        };
+        return { error: errorMessageConstants.ACCOUNT_IS_BLOCKED_BY_ADMIN };
       default:
         return {
           success: true,
