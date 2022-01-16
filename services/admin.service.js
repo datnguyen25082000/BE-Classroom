@@ -78,7 +78,8 @@ module.exports = {
       return fail(errorMessageConstants.USER_ID_NOT_EXIST);
     }
 
-    user.user_is_active = userStatus.BLOCKED_BY_ADMIN;
+    if (user.user_is_active === 2) user.user_is_active = 1;
+    else user.user_is_active = userStatus.BLOCKED_BY_ADMIN;
     await userModel.patch(user);
     return success(user);
   },
