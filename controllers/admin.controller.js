@@ -16,4 +16,9 @@ module.exports = {
     );
     processResult(result, res);
   },
+
+  async getAllUser(req, res, next) {
+    const result = await adminService.getAllUser();
+    processResult(result, res);
+  },
 };

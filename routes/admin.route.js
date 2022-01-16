@@ -12,5 +12,6 @@ const isSuperAdmin = (req, res, next) => {
 
 router.get("/get-all", isSuperAdmin, adminController.getAll);
 router.post("/add", isSuperAdmin, adminController.add);
+router.get("/all-user", adminController.getAllUser);
 
 module.exports = router;

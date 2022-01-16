@@ -49,4 +49,9 @@ module.exports = {
     const result = await adminModel.add(admin);
     return success({ ...admin, id: result.insertId });
   },
+
+  async getAllUser() {
+    const users = await userModel.all();
+    return success(users)
+  }
 };
