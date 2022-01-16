@@ -9,6 +9,8 @@ router.post("/register", authController.register);
 // Login
 router.post("/Login", authController.login);
 
+router.post("/login-admin", authController.loginAdmin);
+
 router.post("/activate-user", authController.activateUser)
 
 router.post("/forgot-password", authController.forgotPassword)

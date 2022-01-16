@@ -3,6 +3,7 @@ const errorMessageConstants = require("../constants/error-message.constants");
 const displayMessageConstants = require("../constants/display-message.constants");
 const jwt = require("jsonwebtoken");
 const processResult = require("../utils/api-helper").processResult;
+const adminService = require("../services/admin.service");
 
 const jwtOptions = {
   secretOrKey: process.env.JWTPRIVATEKEY,
@@ -98,6 +99,14 @@ module.exports = {
       req.body.otp,
       req.body.newPassword
     );
+    processResult(result, res);
+  },
+
+  async loginAdmin(req, res) {
+    const { username, password } = req.body;
+
+    const result = await adminService.authenticate(username, password);
+
     processResult(result, res);
   },
 };
