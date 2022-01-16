@@ -9,7 +9,10 @@ module.exports = {
 
   async getByScoreReviewId(score_review_id) {
     const results = await db.load(
-      `select * from ${TBL_SCORE_REVIEW_COMMENT} where score_review_id = '${score_review_id}'`
+      `select ${TBL_SCORE_REVIEW_COMMENT}.*, users.user_displayname as displayName
+         from ${TBL_SCORE_REVIEW_COMMENT} 
+          join users on users.user_id = ${TBL_SCORE_REVIEW_COMMENT}.created_by
+          where score_review_id = '${score_review_id}'`
     );
 
     return results.length ? results : null;
