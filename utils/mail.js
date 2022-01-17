@@ -8,8 +8,8 @@ module.exports = {
       port: 465,
       secure: true,
       auth: {
-        user: "ntdmyclassroom@gmail.com",
-        pass: "strongpassword123",
+        user: process.env.SMTPEMAIL,
+        pass: process.env.SMTPPASSWORD,
       },
       from: "ntdmyclassroom",
       tls: {
