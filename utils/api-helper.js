@@ -5,7 +5,7 @@ module.exports.processResult = (result, res) => {
     content: {},
   };
   if (result.error) {
-    res.status(404).json({
+    res.status(200).json({
       ...defaultRes,
       message: result.error,
     });
