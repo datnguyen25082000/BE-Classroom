@@ -15,13 +15,16 @@ passport.use(
       secretOrKey: process.env.JWTPRIVATEKEY,
     },
     async (jwt_payload, done) => {
-      const userName = jwt_payload.username;
-      const user = await userService.findUserByUsername(userName);
-      if (user && user.user_is_active === userStatus.ACTIVE) {
-        done(null, user);
-      } else {
-        done(null, false);
+      if (jwt_payload) {
+        const userName = jwt_payload.username;
+        const user = await userService.findUserByUsername(userName);
+        if (user && user.user_is_active === userStatus.ACTIVE) {
+          done(null, user);
+        } else {
+          done(null, false);
+        }
       }
+      done(null, false);
     }
   )
 );
@@ -34,13 +37,16 @@ passport.use(
       secretOrKey: process.env.JWT_AUTHEN_ADMIN,
     },
     async (jwt_payload, done) => {
-      const { username } = jwt_payload;
-      const admin = await adminService.findByUsername(username);
-      if (admin) {
-        done(null, admin);
-      } else {
-        done(null, false);
+      if (jwt_payload) {
+        const { username } = jwt_payload;
+        const admin = await adminService.findByUsername(username);
+        if (admin) {
+          done(null, admin);
+        } else {
+          done(null, false);
+        }
       }
+      done(null, false);
     }
   )
 );
