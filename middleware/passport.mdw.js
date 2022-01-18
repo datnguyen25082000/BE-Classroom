@@ -63,6 +63,7 @@ passport.use(
           profile.id,
           null,
           profile.displayName,
+          null,
           userTypeConstant.FACEBOOK_USER
         );
         user = await userService.findUserByUsername(
